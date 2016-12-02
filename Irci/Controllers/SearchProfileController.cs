@@ -6,15 +6,10 @@ using System.Web.Mvc;
 
 namespace Irci.Controllers
 {
-    public class HomeController : Controller
+    public class SearchProfileController : Controller
     {
-        // GET: Home
+        // GET: SearchProfile
         public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult About()
         {
             return View();
         }
