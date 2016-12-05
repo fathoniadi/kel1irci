@@ -11,7 +11,7 @@ namespace Irci.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+            return View("index");
         }
 
         public ActionResult About()
