@@ -6,11 +6,21 @@ using System.Web.Mvc;
 
 namespace Irci.Controllers
 {
-    public class SearchProfileController : Controller
+    public class searchProfileController : Controller
     {
-        // GET: SearchProfile
+        // GET: ProfileManager
         public ActionResult Index()
         {
+            return View();
+        }
+
+        
+        
+
+        [HttpPost]
+        public ActionResult search_profile(string keywordSearch)
+        {
+            TempData["searchProfile"] = keywordSearch;
             return View();
         }
     }

@@ -16,7 +16,7 @@ namespace Irci
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "ProfileManager", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "searchProfile", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
