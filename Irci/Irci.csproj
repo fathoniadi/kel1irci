@@ -179,7 +179,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Article.cs" />
+    <Compile Include="Entity\Article.cs" />
+    <Compile Include="Models\ArticleHandler.cs" />
     <Compile Include="Models\Connection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -206,6 +207,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\ArticleManager\Index.cshtml" />
+    <Content Include="Views\ArticleManager\GenerateNewArticle.cshtml" />
     <None Include="Views\searchProfile\Index.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

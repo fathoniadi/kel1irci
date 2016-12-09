@@ -1,15 +1,17 @@
-﻿using Irci.Models;
+﻿using Irci.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Irci.Models;
 
 namespace Irci.Controllers
 {
     public class ArticleManagerController : Controller
     {
         // GET: ArticleManager
+        ArticleHandler ah = new ArticleHandler();
         public ActionResult Index()
         {
             var articles = from article in GetAllArticle() orderby article.ID select article;
@@ -18,8 +20,15 @@ namespace Irci.Controllers
 
         public ActionResult GenerateNewArticle()
         {
-            List<Article> article = new List<Article> { new Article { ID = "5", Judul = "test5", Isi = "Ini isi", Author = "Dia" } };
-            return View("Index",article);
+            List<string> ID = ah.getArticles();
+            if (ID == null)
+            {
+                System.Diagnostics.Debug.WriteLine("IDnya NULL");
+                return View("GenerateNewArticle");
+            }
+            System.Diagnostics.Debug.Write(ID);
+
+            return View("GenerateNewArticle", ID);
         }
 
         [NonAction]

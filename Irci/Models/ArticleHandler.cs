@@ -12,6 +12,7 @@ namespace Irci.Models
         private NpgsqlConnection dbCon;
         private NpgsqlCommand dbCmd;
         private List<Article> articles;
+        private List<string> ID;
         public ArticleHandler()
         {
             dbCon = new Connection().getConnection();
@@ -19,9 +20,29 @@ namespace Irci.Models
             dbCmd = new NpgsqlCommand();
         }
 
-        public void getArticles()
+        public List<string> getArticles()
         {
+            ID = new List<string>();
+            dbCmd.Connection = dbCon;
+            dbCmd.CommandText = "SELECT title FROM irci.records";
+            try
+            {
+                var result = dbCmd.ExecuteReader();
 
+                var counter = 0;
+                while (result.Read())
+                {
+                    counter++;
+                    System.Diagnostics.Debug.Write("Result: " + result[0]);
+                    ID.Add(result[0].ToString());
+                    System.Diagnostics.Debug.Write("Counter:"+counter);
+                }
+                
+            }catch(Exception e)
+            {
+                System.Diagnostics.Debug.Write(e);
+            }
+            return ID;
         }
     }
 }
