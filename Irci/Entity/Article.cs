@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Irci.Models
+namespace Irci.Entity
 {
     public class Article
     {
