@@ -69,3 +69,4 @@ D:\GIT\irci\kel1irci\Irci\bin\Microsoft.Owin.Security.Twitter.xml
 D:\GIT\irci\kel1irci\Irci\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 D:\GIT\irci\kel1irci\Irci\obj\Debug\Irci.dll
 D:\GIT\irci\kel1irci\Irci\obj\Debug\Irci.pdb
+D:\GIT\irci\kel1irci\Irci\obj\Debug\Irci.csprojResolveAssemblyReference.cache

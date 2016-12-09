@@ -12,6 +12,7 @@ namespace Irci.Controllers
     {
         // GET: ArticleManager
         ArticleHandler ah = new ArticleHandler();
+        List<Article> articles;
         public ActionResult Index()
         {
             var articles = from article in GetAllArticle() orderby article.ID select article;
@@ -20,15 +21,15 @@ namespace Irci.Controllers
 
         public ActionResult GenerateNewArticle()
         {
-            List<string> ID = ah.getArticles();
-            if (ID == null)
+            articles = ah.getArticles();
+            if (articles == null)
             {
                 System.Diagnostics.Debug.WriteLine("IDnya NULL");
                 return View("GenerateNewArticle");
             }
-            System.Diagnostics.Debug.Write(ID);
+            System.Diagnostics.Debug.Write(articles[0].Judul);
 
-            return View("GenerateNewArticle", ID);
+            return View("Index", articles);
         }
 
         [NonAction]

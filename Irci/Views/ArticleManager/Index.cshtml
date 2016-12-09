@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Irci.Models.Article>
+﻿@model IEnumerable<Irci.Entity.Article>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -8,12 +8,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Judul)
         </th>
-        <th>
+        <!--<th>
             @Html.DisplayNameFor(model => model.Isi)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Author)
-        </th>
+        </th>-->
         <th></th>
     </tr>
 
@@ -22,7 +22,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.Judul)
         </td>
-        <td>
+        <!--<td>
             @Html.DisplayFor(modelItem => item.Isi)
         </td>
         <td>
@@ -32,7 +32,7 @@
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
             @Html.ActionLink("Details", "Details", new { id=item.ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
+        </td>-->
     </tr>
 }
 
