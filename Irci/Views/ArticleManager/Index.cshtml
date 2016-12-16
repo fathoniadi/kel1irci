@@ -8,13 +8,21 @@
         <th>
             @Html.DisplayNameFor(model => model.Judul)
         </th>
-        <!--<th>
-            @Html.DisplayNameFor(model => model.Isi)
+        <th>
+            @Html.DisplayNameFor(model => model.Submission)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Author)
-        </th>-->
-        <th></th>
+            @Html.DisplayNameFor(model => model.Bahasa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Deskripsi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Publisher)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.URL)
+        </th>
     </tr>
 
 @foreach (var item in Model) {
@@ -22,17 +30,21 @@
         <td>
             @Html.DisplayFor(modelItem => item.Judul)
         </td>
-        <!--<td>
-            @Html.DisplayFor(modelItem => item.Isi)
+        <td>
+            @Html.DisplayFor(modelItem => item.Submission)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Author)
+            @Html.DisplayFor(modelItem => item.Bahasa)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>-->
+            @Html.DisplayFor(modelItem => item.Deskripsi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Publisher)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.URL)
+        </td>
     </tr>
 }
 

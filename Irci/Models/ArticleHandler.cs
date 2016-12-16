@@ -23,7 +23,7 @@ namespace Irci.Models
         public List<Article> getArticles()
         {
             dbCmd.Connection = dbCon;
-            dbCmd.CommandText = "SELECT title FROM irci.records LIMIT 5";
+            dbCmd.CommandText = "SELECT title, date_submission, bahasa, description, publisher, resource_identifier FROM irci.records LIMIT 5";
             try
             {
                 var result = dbCmd.ExecuteReader();
@@ -31,7 +31,7 @@ namespace Irci.Models
                 var counter = 0;
                 while (result.Read())
                 {
-                    articles.Add(new Article { Judul = result[0].ToString() });
+                    articles.Add(new Article() { Judul = result[0].ToString(), Submission = result[1].ToString(), Bahasa = result[2].ToString(), Deskripsi = result[3].ToString(), Publisher = result[4].ToString(), URL = result[5].ToString() });
                 }
                 
             }catch(Exception e)

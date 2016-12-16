@@ -15,53 +15,20 @@ namespace Irci.Controllers
         List<Article> articles;
         public ActionResult Index()
         {
-            var articles = from article in GetAllArticle() orderby article.ID select article;
             return View(articles);
         }
 
         public ActionResult GenerateNewArticle()
         {
             articles = ah.getArticles();
-            if (articles == null)
+            for (int i=0; i<articles.Count; i++)
             {
-                System.Diagnostics.Debug.WriteLine("IDnya NULL");
-                return View("GenerateNewArticle");
+                System.Diagnostics.Debug.WriteLine(articles[i]);
             }
-            System.Diagnostics.Debug.Write(articles[0].Judul);
+
+            System.Diagnostics.Debug.WriteLine("==================================================================================================");
 
             return View("Index", articles);
-        }
-
-        [NonAction]
-        public List<Article> GetAllArticle()
-        {
-            return new List<Article>
-            {
-                new Article {
-                    ID ="1",
-                    Judul ="Test1",
-                    Isi ="ini isi",
-                    Author ="Syukron"
-                },
-                new Article {
-                    ID ="2",
-                    Judul ="Test2",
-                    Isi ="ini isi",
-                    Author ="Muhsin"
-                },
-                new Article {
-                    ID ="3",
-                    Judul ="Test2",
-                    Isi ="ini isi",
-                    Author ="Kunto"
-                },
-                new Article {
-                    ID ="4",
-                    Judul ="Test2",
-                    Isi ="ini isi",
-                    Author ="KurKur"
-                },
-            };
         }
     }
 }
