@@ -23,7 +23,7 @@ namespace Irci.Models
         public List<Article> getArticles()
         {
             dbCmd.Connection = dbCon;
-            dbCmd.CommandText = "SELECT title, date_submission, bahasa, description, publisher, resource_identifier FROM irci.records LIMIT 5";
+            dbCmd.CommandText = "SELECT title, date_submission, bahasa, description, publisher, resource_identifier, author_creator FROM irci.records LIMIT 5";
             try
             {
                 var result = dbCmd.ExecuteReader();
@@ -31,14 +31,74 @@ namespace Irci.Models
                 var counter = 0;
                 while (result.Read())
                 {
-                    articles.Add(new Article() { Judul = result[0].ToString(), Submission = result[1].ToString(), Bahasa = result[2].ToString(), Deskripsi = result[3].ToString(), Publisher = result[4].ToString(), URL = result[5].ToString() });
+                    var artikelbaru = new Article() {Judul = result[0].ToString(), Submission = result[1].ToString(), Bahasa = result[2].ToString(), Deskripsi = result[3].ToString(), Publisher = result[4].ToString(), URL = result[5].ToString()};
+                    List<string> temp = new List<string>();
+                    foreach(var value in result[6] as String[])
+                    {
+                        temp.Add(value);
+                    }
+                    artikelbaru.Author = temp;
+                    articles.Add(artikelbaru);
                 }
-                
             }catch(Exception e)
             {
                 System.Diagnostics.Debug.Write(e);
             }
+            dbCmd.Connection.Close();
+        // insertNewArticle(articles[0]);
             return articles;
+        }
+       
+        public int insertNewArticle(Article article)
+        {
+            dbCmd.Connection = dbCon;
+            dbCmd.Connection.Open();
+
+            var idArticle = 0;
+            System.Diagnostics.Debug.Write( article.Submission.Split(' ')[0]);
+
+            dbCmd.CommandText = "insert into new_irci.article (judularticle,submissiondatearticle,bahasaarticle,deskripsiarticle,publisherarticle,urlarticle) values(@judul, to_date(@submission,'MM/DD/YYYY'), @bahasa, @deskripsi, @publisher, @url)";
+            dbCmd.CommandType = System.Data.CommandType.Text;
+            dbCmd.Parameters.Add(new NpgsqlParameter("@judul", article.Judul));
+            dbCmd.Parameters.Add(new NpgsqlParameter("@submission", article.Submission.Split(' ')[0]));
+            dbCmd.Parameters.Add(new NpgsqlParameter("@bahasa", article.Bahasa));
+            dbCmd.Parameters.Add(new NpgsqlParameter("@deskripsi", article.Deskripsi));
+            dbCmd.Parameters.Add(new NpgsqlParameter("@publisher", article.Publisher));
+            dbCmd.Parameters.Add(new NpgsqlParameter("@url", article.URL));
+            try
+            {
+                dbCmd.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
+
+            dbCmd.Connection.Close();
+            dbCmd.Connection.Open();
+
+            dbCmd.CommandText = "select idarticle from new_irci.article where judularticle = @judul and submissiondatearticle = to_date(@submission,'MM/DD/YYYY')";
+            dbCmd.Parameters.Add(new NpgsqlParameter("@judl", article.Judul));
+            dbCmd.Parameters.Add(new NpgsqlParameter("@submission", article.Submission));
+
+            try
+            {
+                var result = dbCmd.ExecuteReader();
+
+                while(result.Read())
+                {
+                    idArticle = int.Parse(result[0].ToString());
+                    //return idArticle;
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
+
+            System.Diagnostics.Debug.WriteLine("inserted");
+
+            return idArticle;
         }
     }
 }

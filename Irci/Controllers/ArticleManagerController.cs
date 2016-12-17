@@ -15,13 +15,15 @@ namespace Irci.Controllers
         List<Article> articles;
         public ActionResult Index()
         {
-            return View(articles);
-        }
-
-        public ActionResult GenerateNewArticle()
-        {
+            
             articles = ah.getArticles();
-            for (int i=0; i<articles.Count; i++)
+            var idarticle = ah.insertNewArticle(articles[0]);
+            System.Diagnostics.Debug.WriteLine(idarticle);
+            foreach (var article in articles)
+            {
+
+            }
+            for (int i = 0; i < articles.Count; i++)
             {
                 System.Diagnostics.Debug.WriteLine(articles[i]);
             }
@@ -29,6 +31,11 @@ namespace Irci.Controllers
             System.Diagnostics.Debug.WriteLine("==================================================================================================");
 
             return View("Index", articles);
+        }
+
+        public ActionResult GenerateNewArticle()
+        {
+            return View();
         }
     }
 }
