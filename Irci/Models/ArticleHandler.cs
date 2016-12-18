@@ -78,7 +78,7 @@ namespace Irci.Models
             dbCmd.Connection.Open();
 
             dbCmd.CommandText = "select idarticle from new_irci.article where judularticle = @judul and submissiondatearticle = to_date(@submission,'MM/DD/YYYY')";
-            dbCmd.Parameters.Add(new NpgsqlParameter("@judl", article.Judul));
+            dbCmd.Parameters.Add(new NpgsqlParameter("@judul", article.Judul));
             dbCmd.Parameters.Add(new NpgsqlParameter("@submission", article.Submission));
 
             try

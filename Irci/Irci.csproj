@@ -175,7 +175,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ArticleManagerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\profileManagerController.cs" />
+    <Compile Include="Controllers\ProfileManagerController.cs" />
     <Compile Include="Controllers\searchProfileController.cs" />
     <Compile Include="Entity\Profile.cs" />
     <Compile Include="Global.asax.cs">
