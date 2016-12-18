@@ -211,6 +211,7 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\ArticleManager\Index.cshtml" />
     <Content Include="Views\ArticleManager\GenerateNewArticle.cshtml" />
+    <Content Include="Views\ProfileManager\ViewProfile.cshtml" />
     <None Include="Views\searchProfile\Index.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -232,7 +233,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Assets\" />
     <Folder Include="Views\Connection\" />
-    <Folder Include="Views\profileManager\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

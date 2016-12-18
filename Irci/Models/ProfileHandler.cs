@@ -87,11 +87,11 @@ namespace Irci.Models
         public Profile GetOneProfile(String _idProfile)
         {
             dbCmd.Connection = dbCon;
-            dbCmd.Connection.Open();
+            //dbCmd.Connection.Open();
             Profile profile = null;
-
-            dbCmd.CommandText = "select idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile from new_irci.profile where idprofile = @idprofile";
-            dbCmd.Parameters.Add(new NpgsqlParameter("@idprofile", _idProfile));
+            _idProfile = _idProfile.ToString();
+            dbCmd.CommandText = "select idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile from new_irci.profile where idprofile = '"+_idProfile+"'";
+            //dbCmd.Parameters.Add(new NpgsqlParameter("@idprofile", _idProfile));
 
             try
             {
