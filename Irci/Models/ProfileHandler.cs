@@ -132,11 +132,8 @@ namespace Irci.Models
         public Profile GetOneProfile(String _idProfile)
         {
             dbCmd.Connection = dbCon;
-<<<<<<< Updated upstream
             //dbCmd.Connection.Open();
-=======
            // dbCmd.Connection.Open();
->>>>>>> Stashed changes
             Profile profile = null;
             _idProfile = _idProfile.ToString();
             dbCmd.CommandText = "select idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile from new_irci.profile where idprofile = '"+_idProfile+"'";
