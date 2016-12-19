@@ -18,6 +18,7 @@ namespace Irci.Models
             dbCon.Open();
             dbCmd = new NpgsqlCommand();
             articles = new List<Article>();
+            dbCmd.Connection = dbCon;
         }
 
         public List<Article> getArticles()
@@ -52,34 +53,28 @@ namespace Irci.Models
         public int insertNewArticle(Article article)
         {
             dbCmd.Connection = dbCon;
-            dbCmd.Connection.Open();
 
             var idArticle = 0;
             System.Diagnostics.Debug.Write( article.Submission.Split(' ')[0]);
 
-            dbCmd.CommandText = "insert into new_irci.article (judularticle,submissiondatearticle,bahasaarticle,deskripsiarticle,publisherarticle,urlarticle) values(@judul, to_date(@submission,'MM/DD/YYYY'), @bahasa, @deskripsi, @publisher, @url)";
+            dbCmd.CommandText = "insert into new_irci.article (judularticle,submissiondatearticle,bahasaarticle,deskripsiarticle,publisherarticle,urlarticle) values('"+article.Judul+"', to_date('"+article.Submission+"','MM/DD/YYYY'),'"+article.Bahasa+"','"+article.Deskripsi+"','"+article.Publisher+"','"+article.URL+"')";
             dbCmd.CommandType = System.Data.CommandType.Text;
-            dbCmd.Parameters.Add(new NpgsqlParameter("@judul", article.Judul));
-            dbCmd.Parameters.Add(new NpgsqlParameter("@submission", article.Submission.Split(' ')[0]));
-            dbCmd.Parameters.Add(new NpgsqlParameter("@bahasa", article.Bahasa));
-            dbCmd.Parameters.Add(new NpgsqlParameter("@deskripsi", article.Deskripsi));
-            dbCmd.Parameters.Add(new NpgsqlParameter("@publisher", article.Publisher));
-            dbCmd.Parameters.Add(new NpgsqlParameter("@url", article.URL));
             try
             {
+                dbCmd.Connection.Open();
                 dbCmd.ExecuteNonQuery();
+                System.Diagnostics.Debug.WriteLine("berhasil input");
             }
             catch(Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e);
             }
-
+            System.Diagnostics.Debug.WriteLine(article.Judul + "inserted");
             dbCmd.Connection.Close();
-            dbCmd.Connection.Open();
+            dbCmd.Connection = dbCon;
 
-            dbCmd.CommandText = "select idarticle from new_irci.article where judularticle = @judul and submissiondatearticle = to_date(@submission,'MM/DD/YYYY')";
-            dbCmd.Parameters.Add(new NpgsqlParameter("@judul", article.Judul));
-            dbCmd.Parameters.Add(new NpgsqlParameter("@submission", article.Submission));
+            dbCmd.CommandText = "select idarticle from new_irci.article where judularticle ='"+article.Judul+"' and submissiondatearticle = to_date('"+article.Submission+"','MM/DD/YYYY')";
+            
 
             try
             {
@@ -97,6 +92,8 @@ namespace Irci.Models
             }
 
             System.Diagnostics.Debug.WriteLine("inserted");
+
+            dbCmd.Connection.Close();
 
             return idArticle;
         }

@@ -21,6 +21,28 @@ namespace Irci.Models
             profiles = new List<Profile>();
         }
 
+        public bool insertAuthorship(List<string> idProfiles, string idArticle)
+        {
+            dbCmd.Connection = dbCon;
+            foreach (var idProfile in idProfiles)
+            {
+                dbCmd.CommandText = "Insert new_irci.authorship(idarticle, idprofile) values ('"+idArticle+"','"+idProfile+"')";
+                try
+                {
+                    dbCmd.Connection.Open();
+                    dbCmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e);
+                }
+
+                dbCmd.Connection.Close();
+                dbCmd.Connection.Open();
+            }
+            return true;
+        }
+
         public List<Profile> getProfiles()
         {
             dbCmd.Connection = dbCon;
@@ -45,10 +67,33 @@ namespace Irci.Models
             return profiles;
         }
 
+        public void insertAuthorship(string idarticle, string idprofile)
+        {
+            dbCmd.Connection = dbCon;
+            dbCmd.CommandText = "SELECT idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile FROM irci_new.records LIMIT 5";
+            try
+            {
+                var result = dbCmd.ExecuteReader();
+
+                while (result.Read())
+                {
+                    // edit sini
+                    // profiles.Add(new Profile() { Judul = result[0].ToString(), Submission = result[1].ToString(), Bahasa = result[2].ToString(), Deskripsi = result[3].ToString(), Publisher = result[4].ToString(), URL = result[5].ToString() });
+                    var profile = new Profile() { ID = result[0].ToString(), IDAccount = result[1].ToString(), IDProfileMain = result[2].ToString(), Nama = result[3].ToString(), Instansi = result[4].ToString(), Deskripsi = result[5].ToString() };
+                    profiles.Add(profile);
+                }
+
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.Write(e);
+            }
+        }
+
         public List<Profile> GetProfiles(String keyword_nama)
         {
             dbCmd.Connection = dbCon;
-            dbCmd.Connection.Open();
+            //dbCmd.Connection.Open();
             List<Profile> profiles = new List<Profile>();
 
             dbCmd.CommandText = "select idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile from new_irci.profile where namaprofile LIKE '%' || @keyword || '%'; ";
@@ -87,7 +132,11 @@ namespace Irci.Models
         public Profile GetOneProfile(String _idProfile)
         {
             dbCmd.Connection = dbCon;
+<<<<<<< Updated upstream
             //dbCmd.Connection.Open();
+=======
+           // dbCmd.Connection.Open();
+>>>>>>> Stashed changes
             Profile profile = null;
             _idProfile = _idProfile.ToString();
             dbCmd.CommandText = "select idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile from new_irci.profile where idprofile = '"+_idProfile+"'";
@@ -121,21 +170,15 @@ namespace Irci.Models
         public int insertProfile(Profile profile)
         {
             dbCmd.Connection = dbCon;
-            dbCmd.Connection.Open();
 
             var idProfile = 0;
             // System.Diagnostics.Debug.Write(article.Submission.Split(' ')[0]);
 
-            dbCmd.CommandText = 
-                "insert into new_irci.profile (idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile) values(@idaccount, @idprofilemain, @nama, @instansi, @deskripsi)";
+            dbCmd.CommandText = "insert into new_irci.profile (namaprofile, deskripsiprofile) values('"+profile.Nama+"', '"+profile.Deskripsi+"')";
             dbCmd.CommandType = System.Data.CommandType.Text;
-            dbCmd.Parameters.Add(new NpgsqlParameter("@idaccount", profile.IDAccount));
-            dbCmd.Parameters.Add(new NpgsqlParameter("@idprofilemain", profile.IDProfileMain));
-            dbCmd.Parameters.Add(new NpgsqlParameter("@nama", profile.Nama));
-            dbCmd.Parameters.Add(new NpgsqlParameter("@instansi", profile.Instansi));
-            dbCmd.Parameters.Add(new NpgsqlParameter("@deskripsi", profile.Deskripsi));
             try
             {
+                dbCmd.Connection.Open();
                 dbCmd.ExecuteNonQuery();
             }
             catch (Exception e)
@@ -146,10 +189,8 @@ namespace Irci.Models
             dbCmd.Connection.Close();
             dbCmd.Connection.Open();
 
-            dbCmd.CommandText = "select idprofile from new_irci.profile where namaprofile = @nama and deskripsi = @deskripsi";
-            dbCmd.Parameters.Add(new NpgsqlParameter("@nama", profile.Nama));
-            dbCmd.Parameters.Add(new NpgsqlParameter("@deskripsi", profile.Deskripsi));
-
+            dbCmd.CommandText = "select idprofile from new_irci.profile where namaprofile = '"+profile.Nama+"' and deskripsiprofile = '"+profile.Deskripsi+"'";
+           
             try
             {
                 var result = dbCmd.ExecuteReader();
@@ -158,6 +199,7 @@ namespace Irci.Models
                 {
                     idProfile = int.Parse(result[0].ToString());
                     //return idArticle;
+                   
                 }
             }
             catch (Exception e)
@@ -166,6 +208,7 @@ namespace Irci.Models
             }
 
             System.Diagnostics.Debug.WriteLine("inserted");
+            dbCmd.Connection.Close();
 
             return idProfile;
         }
