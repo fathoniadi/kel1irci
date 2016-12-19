@@ -14,9 +14,6 @@ namespace Irci.Controllers
             return View();
         }
 
-        
-        
-
         [HttpPost]
         public ActionResult search_profile(string keywordSearch)
         {
