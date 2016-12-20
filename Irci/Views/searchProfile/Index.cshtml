@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<!-- *****************************************************************************************************************
+ HEADERWRAP
+ ***************************************************************************************************************** -->
+<div id="headerwrap" style="height: 100vh">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2" style="top: 50%; transform: translateY(50%);">
+                <!-- <h3>Show your work with this beautiful theme</h3> -->
+                <h1>Indonesia Research Citation Index</h1>
+               
+
+                @using (Html.BeginForm("search_profile", "searchProfile", FormMethod.Post, new { id = "searchForm" }))
+                {
+                
+
+                <div class="input-group" id="costum-search-input">
+                    <input type="text" name="keywordSearch" class="  search-query form-control" placeholder="Search" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-danger" style="background-color:#26657F; border-color: #26657F " type="button">
+                            <span class=" glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+                }
+            </div>
+        </div><!-- /row -->
+    </div> <!-- /container -->
+</div><!-- /headerwrap -->

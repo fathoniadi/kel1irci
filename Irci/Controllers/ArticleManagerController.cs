@@ -32,11 +32,12 @@ namespace Irci.Controllers
         public ActionResult GenerateNewArticle()
         {
             getArticles();
-            foreach(var article in articles)
+            List<string> toBeDeleted = new List<string>();
+            foreach (var article in articles)
             {
                 List<string> profileId = new List<string>();
                 int idArticle=ah.insertNewArticle(article);
-                foreach(var author in article.Author)
+                foreach (var author in article.Author)
                 {
                     System.Diagnostics.Debug.WriteLine(author.Split(';')[0]);
                     // System.Diagnostics
@@ -56,8 +57,43 @@ namespace Irci.Controllers
                     ph.insertAuthorship(profileId, idArticle.ToString());
                     System.Diagnostics.Debug.WriteLine("idProfile: " + idProfile);
                 }
+                toBeDeleted.Add(article.idrecord);
             }
+            ah.deleteRecords(toBeDeleted);
+            getArticles();
             return View("Index",articles);
+        }
+
+        [HttpPost]
+        public ActionResult generateArticles(List<Article> listArticle)
+        {
+            System.Diagnostics.Debug.WriteLine("genereateArticles Called");
+            foreach (var article in listArticle)
+            {
+                List<string> profileId = new List<string>();
+                int idArticle = ah.insertNewArticle(article);
+                foreach (var author in article.Author)
+                {
+                    System.Diagnostics.Debug.WriteLine(author.Split(';')[0]);
+                    // System.Diagnostics
+                    var _Nama = ""; var _Deskripsi = "";
+                    if (author.IndexOf(';') >= 0)
+                    {
+                        _Nama = author.Split(';')[0].Trim('*');
+                        _Deskripsi = author.Split(';')[1];
+                    }
+                    else
+                    {
+                        _Nama = author.Split(';')[0].Trim('*');
+                        _Deskripsi = "";
+                    }
+                    var idProfile = ph.insertProfile(new Profile() { Nama = _Nama, Deskripsi = _Deskripsi });
+                    profileId.Add(idProfile.ToString());
+                    ph.insertAuthorship(profileId, idArticle.ToString());
+                    System.Diagnostics.Debug.WriteLine("idProfile: " + idProfile);
+                }
+            }
+            return View("Index", listArticle);
         }
 
         public void getArticles()

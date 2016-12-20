@@ -24,15 +24,14 @@ namespace Irci.Models
         public List<Article> getArticles()
         {
             dbCmd.Connection = dbCon;
-            dbCmd.CommandText = "SELECT title, date_submission, bahasa, description, publisher, resource_identifier, author_creator FROM irci.records LIMIT 5";
+            dbCmd.CommandText = "SELECT title, date_submission, bahasa, description, publisher, resource_identifier, author_creator, id_record FROM irci.records LIMIT 5 OFFSET 0";
             try
             {
                 var result = dbCmd.ExecuteReader();
 
-                var counter = 0;
                 while (result.Read())
                 {
-                    var artikelbaru = new Article() {Judul = result[0].ToString(), Submission = result[1].ToString(), Bahasa = result[2].ToString(), Deskripsi = result[3].ToString(), Publisher = result[4].ToString(), URL = result[5].ToString()};
+                    var artikelbaru = new Article() {Judul = result[0].ToString(), Submission = result[1].ToString(), Bahasa = result[2].ToString(), Deskripsi = result[3].ToString(), Publisher = result[4].ToString(), URL = result[5].ToString(), idrecord=result[7].ToString()};
                     List<string> temp = new List<string>();
                     foreach(var value in result[6] as String[])
                     {
@@ -48,6 +47,36 @@ namespace Irci.Models
             dbCmd.Connection.Close();
         // insertNewArticle(articles[0]);
             return articles;
+        }
+
+        public void deleteRecords(List<string> idRecords)
+        {
+            string strCommand="delete from irci.records where id_record in (";
+            foreach(var idRecord in idRecords)
+            {
+                strCommand += "'"+idRecord+"',";
+            }
+            dbCmd.Connection = dbCon;
+            dbCmd.CommandText = strCommand.Trim(',')+")";
+            dbCmd.CommandType = System.Data.CommandType.Text;
+            try
+            {
+                dbCmd.Connection.Open();
+            }
+            catch (InvalidOperationException e)
+            {
+            }
+
+            try
+            {
+                dbCmd.ExecuteNonQuery();
+                dbCmd.Connection.Close();
+                //System.Diagnostics.Debug.WriteLine(idRecord + "deleted");
+            }
+            catch (Exception e)
+            {
+
+            }
         }
        
         public int insertNewArticle(Article article)

@@ -3,43 +3,48 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            Judul
-        </th>
-        <th>
-            Submission
-        </th>
-        <th>
-            Author
-        </th>
-        <th>
-            URL
-        </th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Judul)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Submission)
-        </td>
-        <td>
-            @foreach (var author in item.Author)
-            {
-                @author<br/>
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.URL)
-        </td>
-    </tr>
+@using (Html.BeginForm("GenerateNewArticle", "ArticleManager",FormMethod.Post))
+{
+    <table class="table">
+        <tr>
+            <th>
+                Judul
+            </th>
+            <th>
+                Submission
+            </th>
+            <th>
+                Author
+            </th>
+            <th>
+                URL
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Judul)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Submission)
+                </td>
+                <td>
+                    @foreach (var author in item.Author)
+                    {
+                        @author<br />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.URL)
+                </td>
+            </tr>
+        }
+
+    </table>
+    <div style="width:100%">
+        <button style="margin:auto;display:block" type="submit">Generate</button>
+    </div>
 }
-
-</table>
-<div style="width:100%">
-    <button style="margin:auto;display:block">Generate</button>
-</div>
