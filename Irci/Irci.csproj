@@ -217,6 +217,10 @@
     <Content Include="Views\ProfileManager\SearchProfile.cshtml" />
     <Content Include="Views\Auth\login.cshtml" />
     <Content Include="Views\Auth\register.cshtml" />
+    <Content Include="Views\Auth\login.cshtml" />
+    <Content Include="Views\Auth\register.cshtml" />
+    <Content Include="Views\ProfileManager\SearchProfile.cshtml" />
+    <Content Include="Views\ProfileManager\MergeSuccess.cshtml" />
     <None Include="Views\searchProfile\Index.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

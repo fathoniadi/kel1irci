@@ -99,7 +99,7 @@ namespace Irci.Models
             //dbCmd.Connection.Open();
             List<Profile> profiles = new List<Profile>();
 
-            dbCmd.CommandText = "select idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile from new_irci.profile where namaprofile LIKE '%' || @keyword || '%'; ";
+            dbCmd.CommandText = "select idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile from new_irci.profile where namaprofile LIKE '%' || @keyword || '%' limit 30; ";
             dbCmd.Parameters.Add(new NpgsqlParameter("@keyword", keyword_nama));
 
             try
@@ -135,35 +135,39 @@ namespace Irci.Models
         public Profile GetOneProfile(String _idProfile)
         {
             dbCmd.Connection = dbCon;
-            //dbCmd.Connection.Open();
-           // dbCmd.Connection.Open();
-            Profile profile = null;
-            _idProfile = _idProfile.ToString();
-            dbCmd.CommandText = "select idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile from new_irci.profile where idprofile = '"+_idProfile+"'";
-            //dbCmd.Parameters.Add(new NpgsqlParameter("@idprofile", _idProfile));
+            Profile profile = new Profile();
+            try
+            {
+                dbCmd.Connection.Open();
+            }
+            catch (InvalidOperationException e) { }
+
+            dbCmd.CommandText = "select * from new_irci.profile where idprofile="+ _idProfile +";";
+            System.Diagnostics.Debug.WriteLine(dbCmd.CommandText);
 
             try
             {
                 var result = dbCmd.ExecuteReader();
-
                 while (result.Read())
                 {
-                    // idProfile = int.Parse(result[0].ToString());
-                    //return idProfile;
-                    profile.ID = result[0].ToString();
-                    profile.IDAccount = result[1].ToString();
-                    profile.IDProfileMain = result[2].ToString();
-                    profile.Nama = result[3].ToString();
-                    profile.Instansi = result[4].ToString();
-                    profile.Deskripsi = result[5].ToString();
+                    var profiletemp = new Profile()
+                    {
+                        ID = result[0].ToString(),
+                        IDAccount = result[1].ToString(),
+                        IDProfileMain = result[2].ToString(),
+                        Nama = result[3].ToString(),
+                        Instansi = result[4].ToString(),
+                        Deskripsi = result[5].ToString()
+                    };
+
+                    profile = profiletemp;
                 }
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e);
             }
-            dbCmd.Connection.Close();
-
+            
             return profile;
         }
 
@@ -224,7 +228,8 @@ namespace Irci.Models
         {
             dbCmd.Connection = dbCon;
 
-            string IDProfileMain = "100";
+            string IDProfileMain = "100";       // EDIT SINI
+            string IDAccount = "1";             // EDIT SINI
             // System.Diagnostics.Debug.Write(article.Submission.Split(' ')[0]);
 
             string ids = "";
@@ -236,7 +241,7 @@ namespace Irci.Models
                     ids += " or ";
             }
 
-            dbCmd.CommandText = "update new_irci.profile set idprofilemain=" + IDProfileMain + " where " + ids;
+            dbCmd.CommandText = "update new_irci.profile set idprofilemain=" + IDProfileMain + ", idaccount="+ IDAccount +" where " + ids;
             dbCmd.CommandType = System.Data.CommandType.Text;
 
             System.Diagnostics.Debug.WriteLine(dbCmd.CommandText);
