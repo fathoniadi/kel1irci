@@ -11,7 +11,7 @@ namespace Irci.Models
         private NpgsqlConnection conn;
         public Connection()
         {
-            this.conn = new NpgsqlConnection("Host=192.168.0.16;Username=postgres;Password=;Database=irci");
+            this.conn = new NpgsqlConnection("Host=192.168.1.20;Username=postgres;Password=sandi;Database=irci");
         }
         public NpgsqlConnection getConnection()
         {
