@@ -13,6 +13,7 @@ namespace Irci.Controllers
         // GET: ProfileManager
         ProfileHandler ph = new ProfileHandler();
         List<Profile> profiles;
+        Profile profile;
         public ActionResult Index()
         {
             profiles = ph.getProfiles();
@@ -26,11 +27,21 @@ namespace Irci.Controllers
             return View("SearchProfile", profiles);
         }
 
-        public String MergeProfile(String[] profile)
+        [HttpPost]
+        public ActionResult MergeProfile(String[] profile)
         {
             ph.MergeProfile(profile);
 
-            return profile[0];
+            return View("MergeSuccess");
+        }
+
+        [HttpGet]
+        public ActionResult ViewProfile(String idprofile)
+        {
+
+            profile = ph.GetOneProfile(idprofile);
+            ViewData["profile"] = profile;
+            return View();
         }
     }
 }
