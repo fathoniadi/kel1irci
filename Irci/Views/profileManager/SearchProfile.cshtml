@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Irci.Entity.Profile>
+
+@{
+    ViewBag.Title = "SearchProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="headerwrap" style="padding-bottom: 5em">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <!-- <h3>Show your work with this beautiful theme</h3> -->
+                <h1>Indonesia Research Citation Index</h1>
+                <form action="" method="POST" accept-charset="utf-8">
+                    <div class="input-group" id="costum-search-input">
+                        <input type="text" class=" search-query form-control" placeholder="Search" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger" style="background-color:#26657F; border-color: #26657F " type="button">
+                                <span class=" glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <form action="/ProfileManager/MergeProfile" method="post">
+                <div class="col-sm-12" style="background-color: white; padding: 3em ;text-align: left;margin-top: 3em; min-height: 100%">
+                    @foreach (var item in Model)
+                    {
+                        <div style="border-bottom: 1px solid black">
+                            <h4><input class="merging" name="profile" type="checkbox" value="@Html.DisplayFor(modelItem => item.ID)" /> 
+                                <a href="/ProfileManager/ViewProfile?idprofile=@Html.DisplayFor(modelItem => item.IDProfileMain)">
+                                    @Html.DisplayFor(modelItem => item.Nama)
+                                </a>
+                            </h4>
+                            <p>@Html.DisplayFor(modelItem => item.Instansi)</p>
+                            <p>@Html.DisplayFor(modelItem => item.Deskripsi)</p>
+                        </div>
+                    }
+                </div>
+                <input type="submit" name="submit" value="submit" />
+            </form>
+            <div class="col-sm-12" style="background-color: white; padding: 2em ;margin-top: 3em; min-height: 100%">
+                <ul class="pagination">
+                    <li><a href="#">«</a></li>
+                    <li><a href="#">1</a></li>
+                    <li><a class="active" href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+            </div>
+        </div><!-- /row -->
+    </div> <!-- /container -->
+</div><!-- /headerwrap -->

@@ -214,6 +214,9 @@
     <Content Include="Views\ArticleManager\Index.cshtml" />
     <Content Include="Views\ArticleManager\GenerateNewArticle.cshtml" />
     <Content Include="Views\ProfileManager\ViewProfile.cshtml" />
+    <Content Include="Views\ProfileManager\SearchProfile.cshtml" />
+    <Content Include="Views\Auth\login.cshtml" />
+    <Content Include="Views\Auth\register.cshtml" />
     <Content Include="Views\Auth\login.cshtml" />
     <Content Include="Views\Auth\register.cshtml" />
     <Content Include="Views\ProfileManager\SearchProfile.cshtml" />

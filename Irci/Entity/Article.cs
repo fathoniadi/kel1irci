@@ -7,6 +7,7 @@ namespace Irci.Entity
 {
     public class Article
     {
+        public string idrecord { get; set; }
         public string ID { get; set; }
         public string IDJurnal { get; set; }
         public string Judul { get; set; }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Irci.Entity;
 using Npgsql;
 
@@ -26,19 +24,24 @@ namespace Irci.Models
             dbCmd.Connection = dbCon;
             foreach (var idProfile in idProfiles)
             {
-                dbCmd.CommandText = "Insert new_irci.authorship(idarticle, idprofile) values ('"+idArticle+"','"+idProfile+"')";
+                dbCmd.CommandText = "Insert into new_irci.authorship(idarticle, idprofile) values ('"+idArticle+"','"+idProfile+"')";
                 try
                 {
                     dbCmd.Connection.Open();
+                }
+                catch (InvalidOperationException e)
+                {
+
+                }
+                try
+                {
                     dbCmd.ExecuteNonQuery();
                 }
                 catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine(e);
                 }
-
                 dbCmd.Connection.Close();
-                dbCmd.Connection.Open();
             }
             return true;
         }
@@ -67,7 +70,7 @@ namespace Irci.Models
             return profiles;
         }
 
-        public void insertAuthorship(string idarticle, string idprofile)
+        /*public void insertAuthorship(string idarticle, string idprofile)
         {
             dbCmd.Connection = dbCon;
             dbCmd.CommandText = "SELECT idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile FROM irci_new.records LIMIT 5";
@@ -88,7 +91,7 @@ namespace Irci.Models
             {
                 System.Diagnostics.Debug.Write(e);
             }
-        }
+        }*/
 
         public List<Profile> GetProfiles(String keyword_nama)
         {
@@ -175,33 +178,41 @@ namespace Irci.Models
             var idProfile = 0;
             // System.Diagnostics.Debug.Write(article.Submission.Split(' ')[0]);
 
-            dbCmd.CommandText = "insert into new_irci.profile (namaprofile, deskripsiprofile) values('"+profile.Nama+"', '"+profile.Deskripsi+"')";
+            dbCmd.CommandText = "insert into new_irci.profile (namaprofile, deskripsiprofile) values('"+profile.Nama+"', '"+profile.Deskripsi+"') ON CONFLICT(namaprofile) DO NOTHING";
             dbCmd.CommandType = System.Data.CommandType.Text;
             try
             {
                 dbCmd.Connection.Open();
+            }catch(InvalidOperationException e)
+            {
+
+            }
+            try
+            {
                 dbCmd.ExecuteNonQuery();
+                dbCmd.Connection.Close();
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e);
             }
-
-            dbCmd.Connection.Close();
-            dbCmd.Connection.Open();
-
+            
             dbCmd.CommandText = "select idprofile from new_irci.profile where namaprofile = '"+profile.Nama+"' and deskripsiprofile = '"+profile.Deskripsi+"'";
            
             try
             {
+                dbCmd.Connection.Open();
                 var result = dbCmd.ExecuteReader();
+
 
                 while (result.Read())
                 {
                     idProfile = int.Parse(result[0].ToString());
+                    break;
                     //return idArticle;
                    
                 }
+                dbCmd.Connection.Close();
             }
             catch (Exception e)
             {
@@ -209,7 +220,6 @@ namespace Irci.Models
             }
 
             System.Diagnostics.Debug.WriteLine("inserted");
-            dbCmd.Connection.Close();
 
             return idProfile;
         }
