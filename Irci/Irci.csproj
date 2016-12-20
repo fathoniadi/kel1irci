@@ -214,12 +214,9 @@
     <Content Include="Views\ArticleManager\Index.cshtml" />
     <Content Include="Views\ArticleManager\GenerateNewArticle.cshtml" />
     <Content Include="Views\ProfileManager\ViewProfile.cshtml" />
-<<<<<<< HEAD
-    <Content Include="Views\ProfileManager\SearchProfile.cshtml" />
-=======
     <Content Include="Views\Auth\login.cshtml" />
     <Content Include="Views\Auth\register.cshtml" />
->>>>>>> 5489cec26d6ca136ed04d9b22d8a5a3acfb97a56
+    <Content Include="Views\ProfileManager\SearchProfile.cshtml" />
     <None Include="Views\searchProfile\Index.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

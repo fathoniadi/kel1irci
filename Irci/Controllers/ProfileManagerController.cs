@@ -23,7 +23,14 @@ namespace Irci.Controllers
         public ActionResult SearchProfile(String keyword)
         {
             profiles = ph.GetProfiles(keyword);
-            return View("Profile", profiles);
+            return View("SearchProfile", profiles);
+        }
+
+        public String MergeProfile(String[] profile)
+        {
+            ph.MergeProfile(profile);
+
+            return profile[0];
         }
     }
 }

@@ -96,7 +96,7 @@ namespace Irci.Models
             //dbCmd.Connection.Open();
             List<Profile> profiles = new List<Profile>();
 
-            dbCmd.CommandText = "select idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile from new_irci.profile where namaprofile LIKE '%' || @keyword || '%'; ";
+            dbCmd.CommandText = "select idprofile, idaccount, idprofilemain, namaprofile, instansiprofile, deskripsiprofile from new_irci.profile where namaprofile LIKE '%' || @keyword || '%' limit 30; ";
             dbCmd.Parameters.Add(new NpgsqlParameter("@keyword", keyword_nama));
 
             try
@@ -214,7 +214,8 @@ namespace Irci.Models
         {
             dbCmd.Connection = dbCon;
 
-            string IDProfileMain = "100";
+            string IDProfileMain = "100";       // EDIT SINI
+            string IDAccount = "1";             // EDIT SINI
             // System.Diagnostics.Debug.Write(article.Submission.Split(' ')[0]);
 
             string ids = "";
@@ -226,7 +227,7 @@ namespace Irci.Models
                     ids += " or ";
             }
 
-            dbCmd.CommandText = "update new_irci.profile set idprofilemain=" + IDProfileMain + " where " + ids;
+            dbCmd.CommandText = "update new_irci.profile set idprofilemain=" + IDProfileMain + ", idaccount="+ IDAccount +" where " + ids;
             dbCmd.CommandType = System.Data.CommandType.Text;
 
             System.Diagnostics.Debug.WriteLine(dbCmd.CommandText);
