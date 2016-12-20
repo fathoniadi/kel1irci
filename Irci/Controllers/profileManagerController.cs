@@ -24,15 +24,23 @@ namespace Irci.Controllers
         public ActionResult SearchProfile(String keyword)
         {
             profiles = ph.GetProfiles(keyword);
-            return View("Profile", profiles);
+            return View("SearchProfile", profiles);
         }
 
         public ActionResult ViewProfile(int idprofile)
         {
             var _profile = idprofile.ToString();
             profile = ph.GetOneProfile(_profile);
+            ViewData["Profile"] = profile;
 
-            return View();
+            return View("ViewProfile");
+        }
+
+        [HttpPost]
+        public string[] MergeProfile(string[] profile)
+        {
+            ph.MergeProfile(profile);
+            return profile;
         }
     }
 }

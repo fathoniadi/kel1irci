@@ -209,5 +209,44 @@ namespace Irci.Models
 
             return idProfile;
         }
+
+        public void MergeProfile(string[] idprofile)
+        {
+            dbCmd.Connection = dbCon;
+
+            string IDProfileMain = "100";
+            // System.Diagnostics.Debug.Write(article.Submission.Split(' ')[0]);
+
+            string ids = "";
+            for (int i = 0; i < idprofile.Length; i++)
+            {
+                ids += " idprofile=";
+                ids += idprofile[i];
+                if (idprofile.Length - i != 1)
+                    ids += " or ";
+            }
+
+            dbCmd.CommandText = "update new_irci.profile set idprofilemain=" + IDProfileMain + " where " + ids;
+            dbCmd.CommandType = System.Data.CommandType.Text;
+
+            System.Diagnostics.Debug.WriteLine(dbCmd.CommandText);
+
+            try
+            {
+                dbCmd.Connection.Open();
+            }
+            catch (InvalidOperationException e) {}
+
+            try
+            {
+                dbCmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
+
+            dbCmd.Connection.Close();
+        }
     }
 }

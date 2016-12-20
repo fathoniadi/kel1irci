@@ -15,15 +15,15 @@
                 <h1>Indonesia Research Citation Index</h1>
                
 
-                @using (Html.BeginForm("search_profile", "searchProfile", FormMethod.Post, new { id = "searchForm" }))
+                @using (Html.BeginForm("SearchProfile", "ProfileManager", FormMethod.Post, new { id = "keyword" }))
                 {
                 
 
                 <div class="input-group" id="costum-search-input">
-                    <input type="text" name="keywordSearch" class="  search-query form-control" placeholder="Search" />
+                    <input type="text" name="keyword" class="search-query form-control" placeholder="Search" />
                     <span class="input-group-btn">
                         <button class="btn btn-danger" style="background-color:#26657F; border-color: #26657F " type="button">
-                            <span class=" glyphicon glyphicon-search"></span>
+                            <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>
                 </div>

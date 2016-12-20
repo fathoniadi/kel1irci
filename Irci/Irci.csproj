@@ -212,6 +212,7 @@
     <Content Include="Views\ArticleManager\Index.cshtml" />
     <Content Include="Views\ArticleManager\GenerateNewArticle.cshtml" />
     <Content Include="Views\ProfileManager\ViewProfile.cshtml" />
+    <Content Include="Views\ProfileManager\SearchProfile.cshtml" />
     <None Include="Views\searchProfile\Index.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
