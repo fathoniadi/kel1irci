@@ -62,7 +62,15 @@ namespace Irci.Models
             try
             {
                 dbCmd.Connection.Open();
+            }
+            catch (InvalidOperationException e)
+            {
+
+            }
+            try
+            {
                 dbCmd.ExecuteNonQuery();
+                dbCmd.Connection.Close();
                 System.Diagnostics.Debug.WriteLine("berhasil input");
             }
             catch(Exception e)
@@ -70,14 +78,13 @@ namespace Irci.Models
                 System.Diagnostics.Debug.WriteLine(e);
             }
             System.Diagnostics.Debug.WriteLine(article.Judul + "inserted");
-            dbCmd.Connection.Close();
-            dbCmd.Connection = dbCon;
 
             dbCmd.CommandText = "select idarticle from new_irci.article where judularticle ='"+article.Judul+"' and submissiondatearticle = to_date('"+article.Submission+"','MM/DD/YYYY')";
             
 
             try
             {
+                dbCmd.Connection.Open();
                 var result = dbCmd.ExecuteReader();
 
                 while(result.Read())
@@ -85,6 +92,7 @@ namespace Irci.Models
                     idArticle = int.Parse(result[0].ToString());
                     //return idArticle;
                 }
+                dbCmd.Connection.Close();
             }
             catch (Exception e)
             {
@@ -92,8 +100,6 @@ namespace Irci.Models
             }
 
             System.Diagnostics.Debug.WriteLine("inserted");
-
-            dbCmd.Connection.Close();
 
             return idArticle;
         }

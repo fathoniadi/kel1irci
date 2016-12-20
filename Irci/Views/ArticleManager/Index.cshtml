@@ -6,25 +6,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Judul)
+            Judul
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Submission)
+            Submission
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Bahasa)
+            Author
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Deskripsi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Publisher)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Author)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.URL)
+            URL
         </th>
     </tr>
 
@@ -37,18 +28,9 @@
             @Html.DisplayFor(modelItem => item.Submission)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Bahasa)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Deskripsi)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Publisher)
-        </td>
-        <td>
             @foreach (var author in item.Author)
             {
-                @author
+                @author<br/>
             }
         </td>
         <td>
@@ -58,3 +40,6 @@
 }
 
 </table>
+<div style="width:100%">
+    <button style="margin:auto;display:block">Generate</button>
+</div>
