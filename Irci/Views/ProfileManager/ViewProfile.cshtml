@@ -1,8 +1,10 @@
-﻿@model IEnumerable<Irci.Entity.Profile>
+﻿@using Irci.Entity
+@model Irci.Entity.Profile
 
 @{
     ViewBag.Title = "ViewProfile";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    Profile profile = (Profile)ViewData["profile"];
 }
 
 <div id="headerwrap" style="padding-bottom: 5em">
@@ -12,8 +14,9 @@
                 <div class="pull-left" style="height: 20em; padding: 2em;">
                 </div>
                 <div class="pull-left" style="display: inline-block; height:20em; padding: 2em;">
-                    <h2>Buthoro Rahardjo</h2>
-                    <p>Lecturer of Software Engineering, <a href="">Institut Teknologi Sepuluh Nopember</a></p>
+                    <h2>@profile.Nama</h2>
+                    <p>@profile.Instansi</p>
+                    <p>@profile.Deskripsi</p>
                 </div>
             </div>
 
