@@ -61,7 +61,16 @@ namespace Irci.Controllers
             }
             ah.deleteRecords(toBeDeleted);
             getArticles();
-            return View("Index",articles);
+            foreach (var article in articles)
+            {
+                List<string> newAuthor = new List<string>();
+                foreach (var author in article.Author)
+                {
+                    newAuthor.Add(author.Split(';')[0].Trim('*'));
+                }
+                article.Author = newAuthor;
+            }
+            return View("Index", articles);
         }
 
         [HttpPost]
