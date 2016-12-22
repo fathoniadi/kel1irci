@@ -30,9 +30,9 @@
                             <h4><input class="merging" name="profile" type="checkbox" value="@Html.DisplayFor(modelItem => item.ID)" /> 
                                 @if (item.IDProfileMain != null)
                                 {
-                                <a href="/ProfileManager/ViewProfile?idprofile=@Html.DisplayFor(modelItem => item.IDProfileMain)">
-                                    @Html.DisplayFor(modelItem => item.Nama)
-                                </a>
+                                    <a href="/ProfileManager/ViewProfile?idprofile=@Html.DisplayFor(modelItem => item.IDProfileMain)">
+                                        @Html.DisplayFor(modelItem => item.Nama)
+                                    </a>
                                 }
                                 else
                                 {

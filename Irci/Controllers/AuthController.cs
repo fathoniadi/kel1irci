@@ -66,7 +66,7 @@ namespace Irci.Controllers
                 return RedirectToAction("Register", "Auth");
             }
 
-            return View("register");
+            //return View("register");
 
         }
 
