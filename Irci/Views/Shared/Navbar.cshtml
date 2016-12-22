@@ -1,4 +1,9 @@
-﻿<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+﻿@{ 
+    var session = Session["uu"];
+    var url = Request.Url;
+}
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -14,13 +19,22 @@
                 <!-- <li class="active"><a href="index.html">HOME</a></li>
                 <li><a href="about.html">ABOUT</a></li>
                 <li><a href="contact.html">CONTACT</a></li> -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">LOGIN <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="portfolio.html">LOGOUT</a></li>
-                        <!-- <li><a href="single-project.html">SINGLE PROJECT</a></li> -->
-                    </ul>
-                </li>
+                @if (session == null)
+                {
+                    <li><a href="@(url + "Auth\\login")">LOGIN</a></li>
+                    <li><a href="@(url + "Auth\\register")">REGISTER</a></li>
+                }
+                else
+                {
+                     <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@(url+"ProfileManager\\createprofile")"</a></li>
+                            <li><a href="@(url+"Auth\\logout")">LOGOUT</a></li>
+                            <!-- <li><a href="single-project.html">SINGLE PROJECT</a></li> -->
+                        </ul>
+                    </li>
+                }
             </ul>
         </div><!--/.nav-collapse -->
     </div>

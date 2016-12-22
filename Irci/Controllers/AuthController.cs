@@ -13,20 +13,20 @@ namespace Irci.Controllers
         AuthHandler auh = new AuthHandler();
         public ActionResult login()
         {
-
+            if (Session["uu"] != null) return RedirectToAction("index", "searchProfile");
             return View("login");
         }
 
         public ActionResult register()
         {
-
+            if (Session["uu"] != null) return RedirectToAction("index", "searchProfile");
             return View("register");
         }
         [HttpPost]
         public ActionResult doLogin(string email, string password)
         {
             password = Crypto.SHA256(password);
-            System.Diagnostics.Debug.Write(email + password);
+            //System.Diagnostics.Debug.Write(email + password);
             var flagLogin = auh.login(email, password);
             if (flagLogin != "")
             {
@@ -39,8 +39,14 @@ namespace Irci.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            return View("register");
+            //return View("register");
 
+        }
+
+        public ActionResult logut()
+        {
+            Session.Contents.Remove("uu");
+            return RedirectToAction("index", "searchProfile");
         }
         [HttpPost]
         public ActionResult doRegister(string email, string password)

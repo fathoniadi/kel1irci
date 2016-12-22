@@ -31,8 +31,8 @@ namespace Irci.Controllers
         [HttpPost]
         public ActionResult MergeProfile(String[] profile)
         {
-            ph.MergeProfile(profile);
-
+            var idaccount = Session["uu"].ToString();
+            ph.MergeProfile(profile,idaccount);
             return View("MergeSuccess");
         }
 

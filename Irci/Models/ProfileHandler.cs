@@ -270,12 +270,12 @@ namespace Irci.Models
 
         
 
-        public void MergeProfile(string[] idprofile)
+        public void MergeProfile(string[] idprofile, string idaccount)
         {
             dbCmd.Connection = dbCon;
 
             string IDProfileMain = "100";       // EDIT SINI
-            string IDAccount = "1";             // EDIT SINI
+            string IDAccount = idaccount;             // EDIT SINI
             // System.Diagnostics.Debug.Write(article.Submission.Split(' ')[0]);
 
             string ids = "";
