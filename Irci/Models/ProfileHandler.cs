@@ -268,6 +268,8 @@ namespace Irci.Models
             return idProfile;
         }
 
+        
+
         public void MergeProfile(string[] idprofile)
         {
             dbCmd.Connection = dbCon;

@@ -44,6 +44,33 @@ namespace Irci.Models
             return idaccount;
         }
 
+        public int checkProfileMain(int id)
+        {
+            dbCmd.Connection = dbCon;
+            var idaccount = 0;
+            dbCmd.CommandText = "Select idprofile from new_irci.account where idaccount = "+id+" ";
+            try
+            {
+                var result = dbCmd.ExecuteReader();
+
+                while (result.Read())
+                {
+                    idaccount = int.Parse(result[0].ToString());
+                    break;
+                }
+                return idaccount;
+                
+
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
+            //return false;
+
+            return idaccount;
+        }
+
         public bool updateAccountProfile(int idprofile, int idaccount)
         {
             dbCmd.Connection = dbCon;

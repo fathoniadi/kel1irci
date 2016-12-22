@@ -64,6 +64,13 @@ namespace Irci.Controllers
 
         }
 
+        public bool checkProfile(int id)
+        {
+            var flagProfile = auh.checkProfileMain(id);
+            if (flagProfile != 0) return true;
+            else return false;
+        }
+
 
         public bool updateAccountSetProfileMain(int idprofile, int idaccount)
         {

@@ -48,8 +48,14 @@ namespace Irci.Controllers
 
         public ActionResult CreateProfile()
         {
-            Session["uu"] = 3;
-            if (Session["uu"] != null) return View();
+            //Session["uu"] = 3;
+            if (Session["uu"] != null)
+            {
+                var id = int.Parse(Session["uu"].ToString());
+                var flagProfile = auh.checkProfile(id);
+                if (flagProfile == false) return RedirectToAction("index", "searchProfile");
+                else return View();
+            }
             else return RedirectToAction("login", "Auth");
         }
 
