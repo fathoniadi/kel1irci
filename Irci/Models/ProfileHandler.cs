@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Irci.Entity;
 using Npgsql;
-
+using System.Web.Helpers;
 namespace Irci.Models
 {
     public class ProfileHandler
@@ -170,6 +170,50 @@ namespace Irci.Models
             
             return profile;
         }
+
+        public int createProfile(string nama, string instansi, int idaccount)
+        {
+
+            dbCmd.Connection = dbCon;
+
+            //var idprofile =0;
+            // System.Diagnostics.Debug.Write(article.Submission.Split(' ')[0]);
+
+            dbCmd.CommandText = "insert into new_irci.profile (namaprofile, instansiprofile, idaccount) values('" + nama + "', '" + instansi+ "', "+idaccount+ ") RETURNING idprofile";
+            dbCmd.CommandType = System.Data.CommandType.Text;
+            try
+            {
+                dbCmd.Connection.Open();
+            }
+            catch (InvalidOperationException e)
+            {
+
+            }
+
+            try
+            {
+                var result = dbCmd.ExecuteReader();
+                var idprofile = 0;
+
+                while (result.Read())
+                {
+                    System.Diagnostics.Debug.WriteLine(int.Parse(result[0].ToString()));
+                    
+                    idprofile = int.Parse(result[0].ToString());
+                    return idprofile;
+                    break;
+                    //return idArticle;
+
+                }
+                dbCmd.Connection.Close();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
+            return 0;
+        }
+
 
         public int insertProfile(Profile profile)
         {

@@ -63,5 +63,17 @@ namespace Irci.Controllers
             return View("register");
 
         }
+
+
+        public bool updateAccountSetProfileMain(int idprofile, int idaccount)
+        {
+            //var idaccount = Convert.ToInt32(Session["uu"].ToString());
+            System.Diagnostics.Debug.WriteLine("Idprofile di auth "+idprofile);
+            var result = auh.updateAccountProfile(idprofile, idaccount);
+            return true;
+        }
+
     }
+
+
 }
