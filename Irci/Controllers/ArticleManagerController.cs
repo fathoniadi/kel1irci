@@ -15,7 +15,8 @@ namespace Irci.Controllers
         {
             if(articles!=null)
                 articles.Clear();
-            getArticles();
+            //getArticles();
+            articles = ah.getArticlesWithId("1");
             foreach(var article in articles)
             {
                 List<string> newAuthor = new List<string>();

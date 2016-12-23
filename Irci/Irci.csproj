@@ -221,6 +221,7 @@
     <Content Include="Views\Auth\register.cshtml" />
     <Content Include="Views\ProfileManager\SearchProfile.cshtml" />
     <Content Include="Views\ProfileManager\MergeSuccess.cshtml" />
+    <Content Include="Views\ProfileManager\CreateProfile.cshtml" />
     <None Include="Views\searchProfile\Index.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -266,7 +267,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>4637</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

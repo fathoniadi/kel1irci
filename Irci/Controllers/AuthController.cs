@@ -13,24 +13,30 @@ namespace Irci.Controllers
         AuthHandler auh = new AuthHandler();
         public ActionResult login()
         {
-
+            if (Session["uu"] != null) return RedirectToAction("index", "searchProfile");
             return View("login");
         }
 
         public ActionResult register()
         {
-
+            if (Session["uu"] != null) return RedirectToAction("index", "searchProfile");
             return View("register");
         }
         [HttpPost]
         public ActionResult doLogin(string email, string password)
         {
             password = Crypto.SHA256(password);
-            System.Diagnostics.Debug.Write(email + password);
+            //System.Diagnostics.Debug.Write(email + password);
             var flagLogin = auh.login(email, password);
-            if (flagLogin != "")
+            Dictionary<string, string> userData = new Dictionary<string, string>();
+            if (flagLogin != null)
             {
-                Session["uu"] = flagLogin;
+
+
+                userData.Add("email",email);
+                userData.Add("idaccount", flagLogin[0]);
+                userData.Add("roleaccount", flagLogin[1]);
+                Session["uu"] = userData;
                 return RedirectToAction("Index", "searchProfile");
             }
             else
@@ -39,8 +45,14 @@ namespace Irci.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            return View("register");
+            //return View("register");
 
+        }
+
+        public ActionResult logut()
+        {
+            Session.Contents.Remove("uu");
+            return RedirectToAction("index", "searchProfile");
         }
         [HttpPost]
         public ActionResult doRegister(string email, string password)
@@ -60,8 +72,33 @@ namespace Irci.Controllers
                 return RedirectToAction("Register", "Auth");
             }
 
-            return View("register");
+            //return View("register");
 
         }
+
+        public ActionResult logout()
+        {
+            Session.Contents.Remove("uu");
+            return RedirectToAction("index", "searchProfile");
+        }
+
+        public bool checkProfile(int id)
+        {
+            var flagProfile = auh.checkProfileMain(id.ToString());
+            if (flagProfile != "") return true;
+            else return false;
+        }
+
+
+        public bool updateAccountSetProfileMain(int idprofile, int idaccount)
+        {
+            //var idaccount = Convert.ToInt32(Session["uu"].ToString());
+            System.Diagnostics.Debug.WriteLine("Idprofile di auth "+idprofile);
+            var result = auh.updateAccountProfile(idprofile, idaccount);
+            return true;
+        }
+
     }
+
+
 }

@@ -116,5 +116,26 @@ namespace Irci.Models
 
             return idArticle;
         }
+
+        public List<Article> getArticlesWithId(string id)
+        {
+            List<Article> articles = new List<Article>();
+            dbCmd.Connection = dbCon;
+
+            dbCmd.CommandText = "select distinct judularticle, submissiondatearticle, bahasaarticle, deskripsiarticle, publisherarticle, urlarticle from new_irci.article where idarticle in (select distinct idarticle from new_irci.authorship where idprofile in (select distinct idprofile from new_irci.profile where idprofilemain="+id+"))";
+
+            if (dbCmd.Connection.State == System.Data.ConnectionState.Closed)
+            {
+                dbCmd.Connection.Open();
+            }
+            var result = dbCmd.ExecuteReader();
+
+            while (result.Read())
+            {
+                articles.Add(new Article() { Judul =result[0].ToString(), Submission=result[1].ToString(), Bahasa=result[2].ToString(), Deskripsi=result[3].ToString(), Publisher=result[4].ToString(), URL=result[5].ToString()});
+            }
+            dbCmd.Clone();
+            return articles;
+        }
     }
 }
