@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "SearchProfile";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var User = "";
+    if (Session["uu"] != null)
+    {
+        User = Session["uu"].ToString();
+    }
 }
 
 <div id="headerwrap" style="padding-bottom: 5em">
@@ -34,25 +39,30 @@
                         {
                             <div style="border-bottom: 1px solid black">
                                 <h4>
-                                    <input class="merging" name="profile" type="checkbox" value="@Html.DisplayFor(modelItem => item.ID)" />
-                                    @if (item.IDProfileMain != null)
+                                    @if (User != "")
+                                    {
+                                        <input class="merging" name="profile" type="checkbox" value="@Html.DisplayFor(modelItem => item.ID)" />
+                                    }
+                                    @if (item.IDProfileMain != "")
                                     {
                                         <a href="/ProfileManager/ViewProfile?idprofile=@Html.DisplayFor(modelItem => item.IDProfileMain)">
                                             @Html.DisplayFor(modelItem => item.Nama)
                                         </a>
                                     }
                                     else
-                                    {
-                                        <a href="#">
-                                            @Html.DisplayFor(modelItem => item.Nama)
-                                        </a>
+                                    {  
+                                        @Html.DisplayFor(modelItem => item.Nama)
                                     }
                                 </h4>
                                 <p>@Html.DisplayFor(modelItem => item.Instansi)</p>
                                 <p>@Html.DisplayFor(modelItem => item.Deskripsi)</p>
                             </div>
                         }
-                        <input type="submit" class="btn btn-primary" value="Merge">
+
+                        if (User != "")
+                        {
+                            <input type="submit" class="btn btn-primary" value="Merge">
+                        }
                     }
                 </div>
             </form>
