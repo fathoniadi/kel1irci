@@ -80,6 +80,7 @@ namespace Irci.Controllers
         {
             Session.Contents.Remove("uu");
             return RedirectToAction("index", "searchProfile");
+            
         }
 
         public bool checkProfile(int id)
