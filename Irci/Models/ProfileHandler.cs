@@ -195,6 +195,7 @@ namespace Irci.Models
                     System.Diagnostics.Debug.WriteLine(int.Parse(result[0].ToString()));
                     
                     idprofile = int.Parse(result[0].ToString());
+                    UpdateIDProfileMain(result[0].ToString());
                     return idprofile;
                     break;
                     //return idArticle;
@@ -338,6 +339,65 @@ namespace Irci.Models
             }
 
             return IDProfile;
+        }
+
+        public string GetNamaProfileFromProfile(string idprofile)
+        {
+            string NamaProfile = "";
+            dbCmd.Connection = dbCon;
+            dbCmd.CommandText = "select namaprofile from new_irci.profile where idprofile=" + idprofile + ";";
+
+            dbCmd.CommandType = System.Data.CommandType.Text;
+
+            try
+            {
+                dbCmd.Connection.Open();
+            }
+            catch (InvalidOperationException e) { }
+
+            try
+            {
+                var result = dbCmd.ExecuteReader();
+
+                while (result.Read())
+                {
+                    NamaProfile = result[0].ToString();
+                }
+                dbCmd.Connection.Close();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
+
+            return NamaProfile;
+        }
+
+        public void UpdateIDProfileMain(string idprofile)
+        {
+            dbCmd.Connection = dbCon;
+
+            dbCmd.CommandText = "update new_irci.profile set idprofilemain="+ idprofile +" where idprofile="+idprofile;
+            dbCmd.CommandType = System.Data.CommandType.Text;
+
+            dbCmd.CommandTimeout = 0;
+            
+            try
+            {
+                dbCmd.Connection.Open();
+            }
+            catch (Exception e)
+            {}
+
+            try
+            {
+                dbCmd.ExecuteNonQuery();
+                dbCmd.Connection.Close();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
         }
     }
 }

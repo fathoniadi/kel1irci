@@ -73,6 +73,12 @@ namespace Irci.Controllers
                 Dictionary<string, string> userData = (Dictionary<string, string>)Session["uu"];
                 var id = userData["idaccount"];
                 var ResultInsert = ph.createProfile(nama, instansi,Convert.ToInt32(id));
+                Session["idprofile"] = ResultInsert;
+                Session["namaprofile"] = ph.GetNamaProfileFromProfile(ResultInsert.ToString());
+
+                System.Diagnostics.Debug.WriteLine("Session IDProfile = " + Session["idprofile"]);
+                System.Diagnostics.Debug.WriteLine("Session NamaProfile = " + Session["namaprofile"]);
+
                 var ResultUpdate = auh.updateAccountSetProfileMain(ResultInsert, int.Parse(id));
                 return RedirectToAction("index", "searchProfile");
             }

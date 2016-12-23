@@ -11,6 +11,7 @@ namespace Irci.Controllers
     {
         // GET: Auth
         AuthHandler auh = new AuthHandler();
+        ProfileHandler ph = new ProfileHandler();
         public ActionResult login()
         {
             if (Session["uu"] != null) return RedirectToAction("index", "searchProfile");
@@ -37,6 +38,12 @@ namespace Irci.Controllers
                 userData.Add("idaccount", flagLogin[0]);
                 userData.Add("roleaccount", flagLogin[1]);
                 Session["uu"] = userData;
+                Session["idprofile"] = ph.GetProfileFromAccount(flagLogin[0]);
+                Session["namaprofile"] = ph.GetNamaProfileFromProfile(Session["idprofile"].ToString());
+
+                System.Diagnostics.Debug.WriteLine("Login Session IDProfile = " + Session["idprofile"]);
+                System.Diagnostics.Debug.WriteLine("Login Session NamaProfile = " + Session["namaprofile"]);
+
                 return RedirectToAction("Index", "searchProfile");
             }
             else
@@ -84,8 +91,9 @@ namespace Irci.Controllers
 
         public bool checkProfile(int id)
         {
-            var flagProfile = auh.checkProfileMain(id.ToString());
-            if (flagProfile != "") return true;
+            string flagProfile = auh.checkProfileMain(id.ToString());
+            System.Diagnostics.Debug.WriteLine("CHECK PROFILE => "+flagProfile.Length);
+            if (flagProfile.Length == 0) return true;
             else return false;
         }
 
