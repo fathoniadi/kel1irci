@@ -220,7 +220,6 @@ namespace Irci.Models
             dbCmd.Connection = dbCon;
 
             var idProfile = 0;
-            // System.Diagnostics.Debug.Write(article.Submission.Split(' ')[0]);
 
             dbCmd.CommandText = "insert into new_irci.profile (namaprofile, deskripsiprofile) values('"+profile.Nama+"', '"+profile.Deskripsi+"') ON CONFLICT(namaprofile) DO NOTHING";
             dbCmd.CommandType = System.Data.CommandType.Text;
@@ -240,9 +239,9 @@ namespace Irci.Models
             {
                 System.Diagnostics.Debug.WriteLine(e);
             }
+
+            dbCmd.CommandText = "SELECT currval('profile_id_seq');";
             
-            dbCmd.CommandText = "select idprofile from new_irci.profile where namaprofile = '"+profile.Nama+"' and deskripsiprofile = '"+profile.Deskripsi+"'";
-           
             try
             {
                 dbCmd.Connection.Open();
@@ -272,9 +271,11 @@ namespace Irci.Models
 
         public void MergeProfile(string[] idprofile, string idaccount)
         {
+            string IDProfile = GetProfileFromAccount(idaccount);
+
             dbCmd.Connection = dbCon;
 
-            string IDProfileMain = "100";       // EDIT SINI
+            string IDProfileMain = IDProfile;       // EDIT SINI
             string IDAccount = idaccount;             // EDIT SINI
             // System.Diagnostics.Debug.Write(article.Submission.Split(' ')[0]);
 
@@ -308,6 +309,38 @@ namespace Irci.Models
             }
 
             dbCmd.Connection.Close();
+        }
+
+        public string GetProfileFromAccount(string idaccount)
+        {
+            string IDProfile = "";
+            dbCmd.Connection = dbCon;
+            
+            dbCmd.CommandText = "select idprofile from new_irci.account where idaccount="+idaccount+";";
+            dbCmd.CommandType = System.Data.CommandType.Text;
+
+            try
+            {
+                dbCmd.Connection.Open();
+            }
+            catch (InvalidOperationException e) { }
+
+            try
+            {
+                var result = dbCmd.ExecuteReader();
+
+                while (result.Read())
+                {
+                    IDProfile = result[0].ToString();
+                }
+                dbCmd.Connection.Close();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
+
+            return IDProfile;
         }
     }
 }
