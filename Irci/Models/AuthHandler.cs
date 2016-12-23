@@ -24,7 +24,8 @@ namespace Irci.Models
         {
             dbCmd.Connection = dbCon;
             var idaccount = "";
-            dbCmd.CommandText = "Select idaccount from new_irci.account where emailaccount = '" + email + "' and passaccount = '" + password + "' and roleaccount = 2 ";
+            dbCmd.CommandText = "Select idaccount from new_irci.account where emailaccount = '" + email + "' and passaccount = '" + password+ "' and roleaccount=1";
+            System.Diagnostics.Debug.WriteLine(dbCmd.CommandText);
             try
             {
                 var result = dbCmd.ExecuteReader();
@@ -32,6 +33,7 @@ namespace Irci.Models
                 while (result.Read())
                 {
                     idaccount = result[0].ToString();
+                    System.Diagnostics.Debug.WriteLine("ID account =  " + idaccount);
                     break;
                 }
 

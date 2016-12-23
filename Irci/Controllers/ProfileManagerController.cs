@@ -5,13 +5,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Irci.Models;
-
+using Irci.Controllers;
 namespace Irci.Controllers
 {
     public class ProfileManagerController : Controller
     {
         // GET: ProfileManager
         ProfileHandler ph = new ProfileHandler();
+        AuthController auh = new AuthController();
         List<Profile> profiles;
         Profile profile;
         public ActionResult Index()
@@ -30,8 +31,8 @@ namespace Irci.Controllers
         [HttpPost]
         public ActionResult MergeProfile(String[] profile)
         {
-            ph.MergeProfile(profile);
-
+            var idaccount = Session["uu"].ToString();
+            ph.MergeProfile(profile,idaccount);
             return View("MergeSuccess");
         }
 
@@ -42,6 +43,35 @@ namespace Irci.Controllers
             profile = ph.GetOneProfile(idprofile);
             ViewData["profile"] = profile;
             return View();
+        }
+
+
+        public ActionResult CreateProfile()
+        {
+            //Session["uu"] = 3;
+            if (Session["uu"] != null)
+            {
+                var id = int.Parse(Session["uu"].ToString());
+                var flagProfile = auh.checkProfile(id);
+                if (flagProfile == false) return RedirectToAction("index", "searchProfile");
+                else return View();
+            }
+            else return RedirectToAction("login", "Auth");
+        }
+
+        [HttpPost]
+        public ActionResult doCreateProfile(string nama, string instansi)
+        {
+            
+            if (Session["uu"] != null)
+            {
+                System.Diagnostics.Debug.Write(nama + instansi);
+                var id = Session["uu"].ToString();
+                var ResultInsert = ph.createProfile(nama, instansi,Convert.ToInt32(id));
+                var ResultUpdate = auh.updateAccountSetProfileMain(ResultInsert, int.Parse(id));
+                return RedirectToAction("index", "searchProfile");
+            }
+            else return RedirectToAction("login", "Auth");
         }
     }
 }

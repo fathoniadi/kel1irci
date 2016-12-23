@@ -28,9 +28,18 @@
                     {
                         <div style="border-bottom: 1px solid black">
                             <h4><input class="merging" name="profile" type="checkbox" value="@Html.DisplayFor(modelItem => item.ID)" /> 
-                                <a href="/ProfileManager/ViewProfile?idprofile=@Html.DisplayFor(modelItem => item.IDProfileMain)">
-                                    @Html.DisplayFor(modelItem => item.Nama)
-                                </a>
+                                @if (item.IDProfileMain != null)
+                                {
+                                    <a href="/ProfileManager/ViewProfile?idprofile=@Html.DisplayFor(modelItem => item.IDProfileMain)">
+                                        @Html.DisplayFor(modelItem => item.Nama)
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="#">
+                                        @Html.DisplayFor(modelItem => item.Nama)
+                                    </a>
+                                }
                             </h4>
                             <p>@Html.DisplayFor(modelItem => item.Instansi)</p>
                             <p>@Html.DisplayFor(modelItem => item.Deskripsi)</p>
