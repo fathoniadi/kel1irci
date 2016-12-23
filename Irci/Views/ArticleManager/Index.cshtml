@@ -4,7 +4,7 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-@using (Html.BeginForm("GenerateNewArticle", "ArticleManager",FormMethod.Post))
+@using (Html.BeginForm("GenerateNewArticle", "ArticleManager", FormMethod.Post))
 {
     <table class="table">
         <tr>
@@ -27,6 +27,7 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Judul)
+                    @Html.HiddenFor(modelItem=>item.Judul)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Submission)

@@ -25,13 +25,9 @@ namespace Irci.Models
             foreach (var idProfile in idProfiles)
             {
                 dbCmd.CommandText = "Insert into new_irci.authorship(idarticle, idprofile) values ('"+idArticle+"','"+idProfile+"')";
-                try
+                if (dbCmd.Connection.State == System.Data.ConnectionState.Closed)
                 {
                     dbCmd.Connection.Open();
-                }
-                catch (InvalidOperationException e)
-                {
-
                 }
                 try
                 {
@@ -39,9 +35,8 @@ namespace Irci.Models
                 }
                 catch (Exception e)
                 {
-                    System.Diagnostics.Debug.WriteLine(e);
+                    System.Diagnostics.Debug.WriteLine("error insert authorship");
                 }
-                dbCmd.Connection.Close();
             }
             return true;
         }
@@ -214,47 +209,50 @@ namespace Irci.Models
             return 0;
         }
 
-
-        public int insertProfile(Profile profile)
+        public string insertProfile(Profile profile)
         {
             dbCmd.Connection = dbCon;
 
-            var idProfile = 0;
-            // System.Diagnostics.Debug.Write(article.Submission.Split(' ')[0]);
+            var idProfile = "";
 
-            dbCmd.CommandText = "insert into new_irci.profile (namaprofile, deskripsiprofile) values('"+profile.Nama+"', '"+profile.Deskripsi+"') ON CONFLICT(namaprofile) DO NOTHING";
+            dbCmd.CommandText = "insert into new_irci.profile (namaprofile, deskripsiprofile) values('"+profile.Nama+"', '"+profile.Deskripsi+"') ON CONFLICT(namaprofile) DO UPDATE SET deskripsiprofile=EXCLUDED.deskripsiprofile RETURNING idprofile";
             dbCmd.CommandType = System.Data.CommandType.Text;
-            try
+          
+            dbCmd.CommandTimeout = 0;
+            if (dbCmd.Connection.State == System.Data.ConnectionState.Closed)
             {
                 dbCmd.Connection.Open();
-            }catch(InvalidOperationException e)
-            {
-
             }
             try
             {
                 dbCmd.ExecuteNonQuery();
-                dbCmd.Connection.Close();
+            }
+            catch (Exception e) { }
+            
+            try
+            {
+                dbCmd.ExecuteNonQuery();
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e);
             }
+
+            dbCmd.CommandText = "SELECT currval('profile_id_seq');";
             
-            dbCmd.CommandText = "select idprofile from new_irci.profile where namaprofile = '"+profile.Nama+"' and deskripsiprofile = '"+profile.Deskripsi+"'";
-           
             try
             {
                 dbCmd.Connection.Open();
+            }
+            catch(Exception e) {}
+            
+            try 
+            {
                 var result = dbCmd.ExecuteReader();
-
-
                 while (result.Read())
                 {
-                    idProfile = int.Parse(result[0].ToString());
+                    idProfile = result[0].ToString();
                     break;
-                    //return idArticle;
-                   
                 }
                 dbCmd.Connection.Close();
             }
@@ -262,9 +260,7 @@ namespace Irci.Models
             {
                 System.Diagnostics.Debug.WriteLine(e);
             }
-
-            System.Diagnostics.Debug.WriteLine("inserted");
-
+            
             return idProfile;
         }
 
@@ -272,9 +268,11 @@ namespace Irci.Models
 
         public void MergeProfile(string[] idprofile, string idaccount)
         {
+            string IDProfile = GetProfileFromAccount(idaccount);
+
             dbCmd.Connection = dbCon;
 
-            string IDProfileMain = "100";       // EDIT SINI
+            string IDProfileMain = IDProfile;       // EDIT SINI
             string IDAccount = idaccount;             // EDIT SINI
             // System.Diagnostics.Debug.Write(article.Submission.Split(' ')[0]);
 
@@ -308,6 +306,38 @@ namespace Irci.Models
             }
 
             dbCmd.Connection.Close();
+        }
+
+        public string GetProfileFromAccount(string idaccount)
+        {
+            string IDProfile = "";
+            dbCmd.Connection = dbCon;
+            
+            dbCmd.CommandText = "select idprofile from new_irci.account where idaccount="+idaccount+";";
+            dbCmd.CommandType = System.Data.CommandType.Text;
+
+            try
+            {
+                dbCmd.Connection.Open();
+            }
+            catch (InvalidOperationException e) { }
+
+            try
+            {
+                var result = dbCmd.ExecuteReader();
+
+                while (result.Read())
+                {
+                    IDProfile = result[0].ToString();
+                }
+                dbCmd.Connection.Close();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
+
+            return IDProfile;
         }
     }
 }
