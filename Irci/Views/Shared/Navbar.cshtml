@@ -1,5 +1,5 @@
 ﻿@{ 
-    var session = Session["uu"];
+    Dictionary<string, string> userData = (Dictionary<string,string>)Session["uu"];
     // var url = Request.Url;
     var url = "/";
     var idprofile = Session["idprofile"];
@@ -22,7 +22,7 @@
                 <!-- <li class="active"><a href="index.html">HOME</a></li>
                 <li><a href="about.html">ABOUT</a></li>
                 <li><a href="contact.html">CONTACT</a></li> -->
-                @if (session == null)
+                @if (userData == null)
                 {
                 <li><a href="@(url + "Auth/login")">LOGIN</a></li>
                 <li><a href="@(url + "Auth/register")">REGISTER</a></li>

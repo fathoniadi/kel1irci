@@ -28,9 +28,9 @@ namespace Irci.Controllers
         {
             password = Crypto.SHA256(password);
             //System.Diagnostics.Debug.Write(email + password);
-            var flagLogin = auh.login(email, password);
+            List<string> flagLogin = auh.login(email, password);
             Dictionary<string, string> userData = new Dictionary<string, string>();
-            if (flagLogin != null)
+            if (flagLogin.Count>0)
             {
 
 
@@ -87,6 +87,7 @@ namespace Irci.Controllers
         {
             Session.Contents.Remove("uu");
             return RedirectToAction("index", "searchProfile");
+            
         }
 
         public bool checkProfile(int id)
