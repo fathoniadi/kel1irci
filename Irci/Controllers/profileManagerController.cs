@@ -31,7 +31,8 @@ namespace Irci.Controllers
         [HttpPost]
         public ActionResult MergeProfile(String[] profile)
         {
-            var idaccount = Session["uu"].ToString();
+            Dictionary<string, string> userData = (Dictionary<string,string>)Session["uu"];
+            var idaccount = userData["idaccount"];
             ph.MergeProfile(profile,idaccount);
             return View("MergeSuccess");
         }
@@ -51,7 +52,10 @@ namespace Irci.Controllers
             //Session["uu"] = 3;
             if (Session["uu"] != null)
             {
-                var id = int.Parse(Session["uu"].ToString());
+
+                Dictionary<string, string> userData = (Dictionary<string, string>)Session["uu"];
+                var id = int.Parse(userData["idaccount"]);
+                //var id = int.Parse(Session["uu"].ToString());
                 var flagProfile = auh.checkProfile(id);
                 if (flagProfile == false) return RedirectToAction("index", "searchProfile");
                 else return View();
@@ -66,7 +70,8 @@ namespace Irci.Controllers
             if (Session["uu"] != null)
             {
                 System.Diagnostics.Debug.Write(nama + instansi);
-                var id = Session["uu"].ToString();
+                Dictionary<string, string> userData = (Dictionary<string, string>)Session["uu"];
+                var id = userData["idaccount"];
                 var ResultInsert = ph.createProfile(nama, instansi,Convert.ToInt32(id));
                 var ResultUpdate = auh.updateAccountSetProfileMain(ResultInsert, int.Parse(id));
                 return RedirectToAction("index", "searchProfile");

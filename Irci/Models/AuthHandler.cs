@@ -20,20 +20,25 @@ namespace Irci.Models
         }
 
 
-        public string login(string email, string password)
+
+        public List<string> login(string email, string password)
         {
             dbCmd.Connection = dbCon;
             var idaccount = "";
-            dbCmd.CommandText = "Select idaccount from new_irci.account where emailaccount = '" + email + "' and passaccount = '" + password+ "' and roleaccount=1";
+            var roleaccount = "";
+            List<string> userData = new List<string>();
+            dbCmd.CommandText = "Select idaccount, roleaccount from new_irci.account where emailaccount = '" + email + "' and passaccount = '" + password+ "'";
             System.Diagnostics.Debug.WriteLine(dbCmd.CommandText);
             try
             {
                 var result = dbCmd.ExecuteReader();
-
                 while (result.Read())
                 {
                     idaccount = result[0].ToString();
-                    System.Diagnostics.Debug.WriteLine("ID account =  " + idaccount);
+                    roleaccount = result[1].ToString();
+                    userData.Add(idaccount);
+                    userData.Add(roleaccount);
+                    //System.Diagnostics.Debug.WriteLine("ID account =  " + idaccount);
                     break;
                 }
 
@@ -43,21 +48,21 @@ namespace Irci.Models
             {
                 System.Diagnostics.Debug.WriteLine(e);
             }
-            return idaccount;
+            return userData;
         }
 
-        public int checkProfileMain(int id)
+        public string checkProfileMain(string id)
         {
             dbCmd.Connection = dbCon;
-            var idaccount = 0;
-            dbCmd.CommandText = "Select idprofile from new_irci.account where idaccount = "+id+" ";
+            var idaccount = "";
+            dbCmd.CommandText = "Select idprofile from new_irci.account where idaccount = "+id+" and idprofile is not NULL ";
             try
             {
                 var result = dbCmd.ExecuteReader();
 
                 while (result.Read())
                 {
-                    idaccount = int.Parse(result[0].ToString());
+                    if(result!=null) idaccount = result[0].ToString();
                     break;
                 }
                 return idaccount;

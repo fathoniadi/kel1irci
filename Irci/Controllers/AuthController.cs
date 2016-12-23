@@ -28,9 +28,15 @@ namespace Irci.Controllers
             password = Crypto.SHA256(password);
             //System.Diagnostics.Debug.Write(email + password);
             var flagLogin = auh.login(email, password);
-            if (flagLogin != "")
+            Dictionary<string, string> userData = new Dictionary<string, string>();
+            if (flagLogin != null)
             {
-                Session["uu"] = flagLogin;
+
+
+                userData.Add("email",email);
+                userData.Add("idaccount", flagLogin[0]);
+                userData.Add("roleaccount", flagLogin[1]);
+                Session["uu"] = userData;
                 return RedirectToAction("Index", "searchProfile");
             }
             else
@@ -70,10 +76,16 @@ namespace Irci.Controllers
 
         }
 
+        public ActionResult logout()
+        {
+            Session.Contents.Remove("uu");
+            return RedirectToAction("index", "searchProfile");
+        }
+
         public bool checkProfile(int id)
         {
-            var flagProfile = auh.checkProfileMain(id);
-            if (flagProfile != 0) return true;
+            var flagProfile = auh.checkProfileMain(id.ToString());
+            if (flagProfile != "") return true;
             else return false;
         }
 
