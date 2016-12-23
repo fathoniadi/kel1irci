@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Irci.Entity;
 using Npgsql;
 
@@ -27,6 +25,12 @@ namespace Irci.Models
             dbCmd.CommandText = "SELECT title, date_submission, bahasa, description, publisher, resource_identifier, author_creator, id_record FROM irci.records LIMIT 5 OFFSET 0";
             try
             {
+                if (dbCmd.Connection.State == System.Data.ConnectionState.Closed)
+                {
+                    dbCmd.Connection.Open();
+                }
+
+                dbCmd.CommandTimeout = 0;
                 var result = dbCmd.ExecuteReader();
 
                 while (result.Read())
@@ -45,7 +49,6 @@ namespace Irci.Models
                 System.Diagnostics.Debug.Write(e);
             }
             dbCmd.Connection.Close();
-        // insertNewArticle(articles[0]);
             return articles;
         }
 
@@ -65,13 +68,13 @@ namespace Irci.Models
             }
             catch (InvalidOperationException e)
             {
+
             }
 
             try
             {
-                dbCmd.ExecuteNonQuery();
+                dbCmd.ExecuteReader();
                 dbCmd.Connection.Close();
-                //System.Diagnostics.Debug.WriteLine(idRecord + "deleted");
             }
             catch (Exception e)
             {
@@ -79,14 +82,13 @@ namespace Irci.Models
             }
         }
        
-        public int insertNewArticle(Article article)
+        public string insertNewArticle(Article article)
         {
             dbCmd.Connection = dbCon;
 
-            var idArticle = 0;
-            System.Diagnostics.Debug.Write( article.Submission.Split(' ')[0]);
+            var idArticle = "";
 
-            dbCmd.CommandText = "insert into new_irci.article (judularticle,submissiondatearticle,bahasaarticle,deskripsiarticle,publisherarticle,urlarticle) values('"+article.Judul+"', to_date('"+article.Submission+"','MM/DD/YYYY'),'"+article.Bahasa+"','"+article.Deskripsi+"','"+article.Publisher+"','"+article.URL+"')";
+            dbCmd.CommandText = "insert into new_irci.article (judularticle,submissiondatearticle,bahasaarticle,deskripsiarticle,publisherarticle,urlarticle) values('"+article.Judul+"', to_date('"+article.Submission+"','MM/DD/YYYY'),'"+article.Bahasa+"','"+article.Deskripsi+"','"+article.Publisher+"','"+article.URL+"') RETURNING idarticle";
             dbCmd.CommandType = System.Data.CommandType.Text;
             try
             {
@@ -94,11 +96,16 @@ namespace Irci.Models
             }
             catch (InvalidOperationException e)
             {
-
+                System.Diagnostics.Debug.WriteLine("masalah open koneksi database");
             }
             try
             {
-                dbCmd.ExecuteNonQuery();
+                var result = dbCmd.ExecuteReader();
+                
+                while (result.Read())
+                {
+                    idArticle = result[0].ToString();
+                }
                 dbCmd.Connection.Close();
                 System.Diagnostics.Debug.WriteLine("berhasil input");
             }
@@ -106,31 +113,29 @@ namespace Irci.Models
             {
                 System.Diagnostics.Debug.WriteLine(e);
             }
-            System.Diagnostics.Debug.WriteLine(article.Judul + "inserted");
-
-            dbCmd.CommandText = "select idarticle from new_irci.article where judularticle ='"+article.Judul+"' and submissiondatearticle = to_date('"+article.Submission+"','MM/DD/YYYY')";
-            
-
-            try
-            {
-                dbCmd.Connection.Open();
-                var result = dbCmd.ExecuteReader();
-
-                while(result.Read())
-                {
-                    idArticle = int.Parse(result[0].ToString());
-                    //return idArticle;
-                }
-                dbCmd.Connection.Close();
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e);
-            }
-
-            System.Diagnostics.Debug.WriteLine("inserted");
 
             return idArticle;
+        }
+
+        public List<Article> getArticlesWithId(string id)
+        {
+            List<Article> articles = new List<Article>();
+            dbCmd.Connection = dbCon;
+
+            dbCmd.CommandText = "select distinct judularticle, submissiondatearticle, bahasaarticle, deskripsiarticle, publisherarticle, urlarticle from new_irci.article where idarticle in (select distinct idarticle from new_irci.authorship where idprofile in (select distinct idprofile from new_irci.profile where idprofilemain="+id+"))";
+
+            if (dbCmd.Connection.State == System.Data.ConnectionState.Closed)
+            {
+                dbCmd.Connection.Open();
+            }
+            var result = dbCmd.ExecuteReader();
+
+            while (result.Read())
+            {
+                articles.Add(new Article() { Judul =result[0].ToString(), Submission=result[1].ToString(), Bahasa=result[2].ToString(), Deskripsi=result[3].ToString(), Publisher=result[4].ToString(), URL=result[5].ToString()});
+            }
+            dbCmd.Clone();
+            return articles;
         }
     }
 }
