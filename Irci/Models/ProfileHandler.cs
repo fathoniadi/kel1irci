@@ -25,13 +25,9 @@ namespace Irci.Models
             foreach (var idProfile in idProfiles)
             {
                 dbCmd.CommandText = "Insert into new_irci.authorship(idarticle, idprofile) values ('"+idArticle+"','"+idProfile+"')";
-                try
+                if (dbCmd.Connection.State == System.Data.ConnectionState.Closed)
                 {
                     dbCmd.Connection.Open();
-                }
-                catch (InvalidOperationException e)
-                {
-
                 }
                 try
                 {
@@ -39,9 +35,8 @@ namespace Irci.Models
                 }
                 catch (Exception e)
                 {
-                    System.Diagnostics.Debug.WriteLine(e);
+                    System.Diagnostics.Debug.WriteLine("error insert authorship");
                 }
-                dbCmd.Connection.Close();
             }
             return true;
         }
@@ -214,26 +209,29 @@ namespace Irci.Models
             return 0;
         }
 
-
-        public int insertProfile(Profile profile)
+        public string insertProfile(Profile profile)
         {
             dbCmd.Connection = dbCon;
 
-            var idProfile = 0;
+            var idProfile = "";
 
-            dbCmd.CommandText = "insert into new_irci.profile (namaprofile, deskripsiprofile) values('"+profile.Nama+"', '"+profile.Deskripsi+"') ON CONFLICT(namaprofile) DO NOTHING";
+            dbCmd.CommandText = "insert into new_irci.profile (namaprofile, deskripsiprofile) values('"+profile.Nama+"', '"+profile.Deskripsi+"') ON CONFLICT(namaprofile) DO UPDATE SET deskripsiprofile=EXCLUDED.deskripsiprofile RETURNING idprofile";
             dbCmd.CommandType = System.Data.CommandType.Text;
-            try
+          
+            dbCmd.CommandTimeout = 0;
+            if (dbCmd.Connection.State == System.Data.ConnectionState.Closed)
             {
                 dbCmd.Connection.Open();
-            }catch(InvalidOperationException e)
-            {
-
             }
             try
             {
                 dbCmd.ExecuteNonQuery();
-                dbCmd.Connection.Close();
+            }
+            catch (Exception e) { }
+            
+            try
+            {
+                dbCmd.ExecuteNonQuery();
             }
             catch (Exception e)
             {
@@ -245,15 +243,16 @@ namespace Irci.Models
             try
             {
                 dbCmd.Connection.Open();
+            }
+            catch(Exception e) {}
+            
+            try 
+            {
                 var result = dbCmd.ExecuteReader();
-
-
                 while (result.Read())
                 {
-                    idProfile = int.Parse(result[0].ToString());
+                    idProfile = result[0].ToString();
                     break;
-                    //return idArticle;
-                   
                 }
                 dbCmd.Connection.Close();
             }
@@ -261,9 +260,7 @@ namespace Irci.Models
             {
                 System.Diagnostics.Debug.WriteLine(e);
             }
-
-            System.Diagnostics.Debug.WriteLine("inserted");
-
+            
             return idProfile;
         }
 
