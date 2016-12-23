@@ -11,12 +11,15 @@ namespace Irci.Controllers
         ArticleHandler ah = new ArticleHandler();
         ProfileHandler ph = new ProfileHandler();
         List<Article> articles;
+        string url = "http://riset.ajk.if.its.ac.id/kel1irci/";
         public ActionResult Index()
         {
-            if(articles!=null)
+           // Dictionary<string, string> userData = (Dictionary<string, string>)Session["uu"];
+           // if (userData == null || userData["roleaccount"]=="1") return Redirect(url + "searchProfile/index");
+            if (articles!=null)
                 articles.Clear();
-            //getArticles();
-            articles = ah.getArticlesWithId("1");
+            getArticles();
+           // articles = ah.getArticlesWithId("1");
             foreach(var article in articles)
             {
                 List<string> newAuthor = new List<string>();
@@ -69,7 +72,7 @@ namespace Irci.Controllers
                 toBeDeleted.Add(article.idrecord);
             }
             ah.deleteRecords(toBeDeleted);
-            return RedirectToAction("Index");
+            return Redirect(url + "ArticleManager/index");
         }
 
         public void getArticles()

@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Home Page";
+    var url = "http://riset.ajk.if.its.ac.id/kel1irci/";
 }
 
 
@@ -15,9 +16,8 @@
                 <h1>Indonesia Research Citation Index</h1>
                
 
-                @using (Html.BeginForm("SearchProfile", "ProfileManager", FormMethod.Post, new { id = "keyword" }))
-                {
                 
+                <form action="@(url+"ProfileManager/SearchProfile")" method="post" class="col-sm-8 col-lg-offset-2">
 
                 <div class="input-group" id="costum-search-input">
                     <input type="text" name="keyword" class="  search-query form-control" placeholder="Search" />
@@ -27,7 +27,7 @@
                         </button>
                     </span>
                 </div>
-                }
+                </form>
             </div>
         </div><!-- /row -->
     </div> <!-- /container -->

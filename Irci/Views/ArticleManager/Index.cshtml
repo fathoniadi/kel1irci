@@ -1,11 +1,10 @@
 ﻿@model IEnumerable<Irci.Entity.Article>
+@{
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+    var url = "http://riset.ajk.if.its.ac.id/kel1irci/";
+}
 
-@using (Html.BeginForm("GenerateNewArticle", "ArticleManager", FormMethod.Post))
-{
+    <form action="@(url+"ArticleManager/GenerateNewArticle/")" method="POST">
     <table class="table">
         <tr>
             <th>
@@ -23,11 +22,11 @@
         </tr>
 
         @foreach (var item in Model)
-        {
+            {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Judul)
-                    @Html.HiddenFor(modelItem=>item.Judul)
+                    @Html.HiddenFor(modelItem => item.Judul)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Submission)
@@ -45,7 +44,10 @@
         }
 
     </table>
+
     <div style="width:100%">
         <button style="margin:auto;display:block" type="submit">Generate</button>
     </div>
+</form>
+
 }

@@ -12,15 +12,17 @@ namespace Irci.Controllers
         // GET: Auth
         AuthHandler auh = new AuthHandler();
         ProfileHandler ph = new ProfileHandler();
+        string url = "http://riset.ajk.if.its.ac.id/kel1irci/";
         public ActionResult login()
         {
-            if (Session["uu"] != null) return RedirectToAction("index", "searchProfile");
+            if (Session["uu"] != null)
+                return  Redirect(url+"searchProfile/index");
             return View("login");
         }
 
         public ActionResult register()
         {
-            if (Session["uu"] != null) return RedirectToAction("index", "searchProfile");
+            if (Session["uu"] != null) return Redirect(url + "searchProfile/index");
             return View("register");
         }
         [HttpPost]
@@ -44,12 +46,12 @@ namespace Irci.Controllers
                 System.Diagnostics.Debug.WriteLine("Login Session IDProfile = " + Session["idprofile"]);
                 System.Diagnostics.Debug.WriteLine("Login Session NamaProfile = " + Session["namaprofile"]);
 
-                return RedirectToAction("Index", "searchProfile");
+                return Redirect(url + "searchProfile/index");
             }
             else
             {
                 Session["mess"] = "Sukses Register";
-                return RedirectToAction("Login", "Auth");
+                return Redirect(url + "searchProfile/index");
             }
 
             //return View("register");
@@ -59,7 +61,7 @@ namespace Irci.Controllers
         public ActionResult logut()
         {
             Session.Contents.Remove("uu");
-            return RedirectToAction("index", "searchProfile");
+            return Redirect(url + "searchProfile/index");
         }
         [HttpPost]
         public ActionResult doRegister(string email, string password)
@@ -71,12 +73,12 @@ namespace Irci.Controllers
             if (flagRegister != "")
             {
                 Session["mess"] = "Sukses Register";
-                return RedirectToAction("Register", "Auth");
+                 return Redirect(url + "Auth/register");
                 //Redirect
             }
             else {
                 Session["mess"] = "Gagal Register";
-                return RedirectToAction("Register", "Auth");
+                return Redirect(url + "Auth/register");
             }
 
             //return View("register");
@@ -86,8 +88,8 @@ namespace Irci.Controllers
         public ActionResult logout()
         {
             Session.Contents.Remove("uu");
-            return RedirectToAction("index", "searchProfile");
-            
+            return Redirect(url + "searchProfile/index");
+
         }
 
         public bool checkProfile(int id)

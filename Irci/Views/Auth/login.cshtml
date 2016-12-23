@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@{
+
+
+    var url = "http://riset.ajk.if.its.ac.id/kel1irci/";
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -9,13 +15,16 @@
     <link rel="shortcut icon" href="assets/ico/favicon.ico">
     <title>Indonesia Research Citation Index</title>
     <!-- Bootstrap core CSS -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
-    @Styles.Render("~/Assets/css/bootstrap.css")
+    <!-- Bootstrap core CSS -->
+    <link href="@(url+"assets/css/bootstrap.css")" rel="stylesheet">
+
+
     <!-- Custom styles for this template -->
-    <link href="assets/css/style.css" rel="stylesheet">
-    @Styles.Render("~/Assets/css/style.css")
-    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
-    @Styles.Render("~/Assets/css/font-awesome.min.css")
+    <link href="@(url+"Assets/css/style.css")" rel="stylesheet">
+
+    <link href="@(url+"Assets/css/font-awesome.min.css")" rel="stylesheet">
+
+    
     <style type="text/css" media="screen">
         #custom-search-input {
             margin: 0;
@@ -79,8 +88,7 @@
                 <div class="col-sm-6" style="margin: 0 auto; left:25%; top: 50%; transform: translateY(50%); background-color: white; padding: 2em; color: black">
                     <!-- <h3>Show your work with this beautiful theme</h3> -->
                     <h4 style="color:black">Login Indonesia Research Citation Index</h4>
-                    @using (Html.BeginForm("doLogin", "Auth", FormMethod.Post, new { id = "loginForm", @class = "col-sm-8 col-lg-offset-2" }))
-                    {
+                    <form action="@(url+"Auth/doLogin")" method="post" class="col-sm-8 col-lg-offset-2">
                         <div class="form-group">
                             <input name="email" required type="text" class="form-control" placeholder="Email" />
                         </div>
@@ -88,7 +96,7 @@
                             <input name="password" required type="password" class="form-control" placeholder="Password" />
                         </div>
                         <button type="submit" class="btn btn-primary">Login</button>
-                    }
+                    </form>
                 </div>
             </div><!-- /row -->
         </div> <!-- /container -->
@@ -106,15 +114,21 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
-    @Scripts.Render("~/assets/js/bootstrap.min.js")
-    @Scripts.Render("~/assets/js/retina-1.1.0.js")
-    @Scripts.Render("~/assets/js/jquery.hoverdir.js")
-    @Scripts.Render("~/assets/js/jquery.hoverex.min.js")
-    @Scripts.Render("~/assets/js/jquery.prettyPhoto.js")
-    @Scripts.Render("~/assets/js/jquery.isotope.min.js")
-    @Scripts.Render("~/assets/js/costum.js")
+    <script src="@(url+"assets/js/bootstrap.min.js")"></script>
 
+    <script src="@(url+"assets/js/retina-1.1.0.js")"></script>
+
+    <script src="@(url+"assets/js/jquery.hoverdir.js")"></script>
+
+    <script src="@(url+"assets/js/jquery.hoverex.min.js")"></script>
+
+    <script src="@(url+ "assets/js/jquery.prettyPhoto.js")"></script>
+
+    <script src="@(url+ "assets/js/jquery.isotope.min.js")"></script>
+
+    <script src="@(url+ "assets/js/costum.js")"></script>
     <script>
 // Portfolio
 (function($) {

@@ -215,7 +215,8 @@ namespace Irci.Models
             dbCmd.Connection = dbCon;
 
             var idProfile = "";
-
+            profile.Deskripsi.Replace("'", "");
+            System.Diagnostics.Debug.WriteLine(profile.Deskripsi);
             dbCmd.CommandText = "insert into new_irci.profile (namaprofile, deskripsiprofile) values('"+profile.Nama+"', '"+profile.Deskripsi+"') ON CONFLICT(namaprofile) DO UPDATE SET deskripsiprofile=EXCLUDED.deskripsiprofile RETURNING idprofile";
             dbCmd.CommandType = System.Data.CommandType.Text;
           
@@ -226,36 +227,21 @@ namespace Irci.Models
             }
             try
             {
-                dbCmd.ExecuteNonQuery();
-            }
-            catch (Exception e) { }
-            
-            try
-            {
-                dbCmd.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e);
-            }
-
-            dbCmd.CommandText = "SELECT currval('profile_id_seq');";
-            
-            try
-            {
-                dbCmd.Connection.Open();
-            }
-            catch(Exception e) {}
-            
-            try 
-            {
-                var result = dbCmd.ExecuteReader();
+                var result=dbCmd.ExecuteReader();
                 while (result.Read())
                 {
                     idProfile = result[0].ToString();
-                    break;
                 }
                 dbCmd.Connection.Close();
+            }
+            catch (Exception e) { }
+            if(dbCmd.Connection.State==System.Data.ConnectionState.Closed)
+            {
+                dbCmd.Connection.Open();
+            }
+            try
+            {
+                dbCmd.ExecuteNonQuery();
             }
             catch (Exception e)
             {

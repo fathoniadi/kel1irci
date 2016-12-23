@@ -4,6 +4,7 @@
     ViewBag.Title = "SearchProfile";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var User = "";
+    var url = "http://riset.ajk.if.its.ac.id/kel1irci/";
     if (Session["uu"] != null)
     {
         User = Session["uu"].ToString();
@@ -16,7 +17,7 @@
             <div class="col-lg-8 col-lg-offset-2">
                 <!-- <h3>Show your work with this beautiful theme</h3> -->
                 <h1>Indonesia Research Citation Index</h1>
-                <form action="/ProfileManager/SearchProfile" method="POST" accept-charset="utf-8">
+                <form action="@(url+"ProfileManager/SearchProfile")" method="POST" accept-charset="utf-8">
                     <div class="input-group" id="costum-search-input">
                         <input type="text" class="search-query form-control" placeholder="Search" name="keyword" />
                         <span class="input-group-btn">
@@ -27,7 +28,7 @@
                     </div>
                 </form>
             </div>
-            <form action="/ProfileManager/MergeProfile" method="post">
+            <form action=="@(url+"ProfileManager/MergeProfile")" method="post">
                 <div class="col-sm-12" style="background-color: white; padding: 3em ;text-align: left;margin-top: 3em; min-height: 100%">
                     @if (Model.Count() == 0)
                     {
@@ -45,7 +46,7 @@
                                     }
                                     @if (item.IDProfileMain != "")
                                     {
-                                        <a href="/ProfileManager/ViewProfile?idprofile=@Html.DisplayFor(modelItem => item.IDProfileMain)">
+                                        <a href="@(url+"ProfileManager/ViewProfile?idprofile=")@Html.DisplayFor(modelItem => item.IDProfileMain)">
                                             @Html.DisplayFor(modelItem => item.Nama)
                                         </a>
                                     }

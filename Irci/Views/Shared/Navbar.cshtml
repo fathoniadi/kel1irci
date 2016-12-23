@@ -1,9 +1,11 @@
 ﻿@{ 
-    Dictionary<string, string> userData = (Dictionary<string,string>)Session["uu"];
+    Dictionary<string, string> userData = (Dictionary<string, string>)Session["uu"];
+   
     // var url = Request.Url;
-    var url = "/";
+    var url = "http://riset.ajk.if.its.ac.id/kel1irci/";
     var idprofile = Session["idprofile"];
     var namaprofile = @Session["namaprofile"];
+
 }
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -29,21 +31,28 @@
                 }
                 else
                 {
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        @if (idprofile.ToString().Length != 0)
-                        {
-                            <li><a href="@(url+"ProfileManager/ViewProfile?idprofile=" + idprofile)">Profile @(idprofile)</a></li>
-                        }
-                        else
-                        {
-                            <li><a href="@(url+"ProfileManager/createprofile")">CREATE PROFILE</a></li>
-                        }
-                        <li><a href="@(url+"Auth/logout")">LOGOUT</a></li>
-                        <!-- <li><a href="single-project.html">SINGLE PROJECT</a></li> -->
-                    </ul>
-                </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            @if (userData["roleaccount"] == "1")
+                            {
+                                if (idprofile.ToString().Length != 0)
+                                {
+                                    <li><a href="@(url + "ProfileManager/ViewProfile?idprofile=" + idprofile)">Profile @(idprofile)</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@(url + "ProfileManager/createprofile")">CREATE PROFILE</a></li>
+                                }
+                            }
+                            else
+                            {
+                                <li><a href="@(url + "ArticleManager/index")">ADMIN MENU</a></li>
+                            }
+                            <li><a href="@(url+"Auth/logout")">LOGOUT</a></li>
+                            <!-- <li><a href="single-project.html">SINGLE PROJECT</a></li> -->
+                        </ul>
+                    </li>
                 }
             </ul>
         </div><!--/.nav-collapse -->

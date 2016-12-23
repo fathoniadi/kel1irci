@@ -15,6 +15,7 @@ namespace Irci.Controllers
         AuthController auh = new AuthController();
         List<Profile> profiles;
         Profile profile;
+        string url = "http://riset.ajk.if.its.ac.id/kel1irci/";
         public ActionResult Index()
         {
             profiles = ph.getProfiles();
@@ -60,7 +61,7 @@ namespace Irci.Controllers
                 if (flagProfile == false) return RedirectToAction("index", "searchProfile");
                 else return View();
             }
-            else return RedirectToAction("login", "Auth");
+            else return Redirect(url + "Auth/login");
         }
 
         [HttpPost]
@@ -82,7 +83,7 @@ namespace Irci.Controllers
                 var ResultUpdate = auh.updateAccountSetProfileMain(ResultInsert, int.Parse(id));
                 return RedirectToAction("index", "searchProfile");
             }
-            else return RedirectToAction("login", "Auth");
+            else return Redirect(url + "Auth/login");
         }
     }
 }
